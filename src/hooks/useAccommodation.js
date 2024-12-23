@@ -2,15 +2,16 @@ import { useState, useEffect } from "react";
 import api from "../utils/api";
 
 /**
- * Custom hook to fetch accommodation data.
- * @param {number} areaCode - The area code for the desired location (default: 1).
- * @param {number|null} sigunguCode - The sub-area code for the location (optional).
- * @returns {object} { accommodations, loading, error }
+ * Custom hook to fetch accommodation data with pagination.
+ * @param {number} page - The page number for pagination.
+ * @param {number} pageSize - The number of items per page.
+ * @returns {object} { accommodations, loading, error, hasMore }
  */
-const useAccommodation = (areaCode = 1, sigunguCode = null) => {
+const useAccommodation = (page = 1, pageSize = 10) => {
   const [accommodations, setAccommodations] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [hasMore, setHasMore] = useState(true); // 더 많은 데이터가 있는지 확인
 
   useEffect(() => {
     const fetchAccommodations = async () => {
@@ -19,16 +20,18 @@ const useAccommodation = (areaCode = 1, sigunguCode = null) => {
 
       try {
         const params = {
-          areaCode,
-          contentTypeId: 32, // Content type ID for accommodations
+          pageNo: page, // 페이지 번호
+          numOfRows: pageSize, // 페이지 당 데이터 수
+          contentTypeId: 32, // 숙박 시설의 contentTypeId
         };
 
-        if (sigunguCode) {
-          params.sigunguCode = sigunguCode;
+        const data = await api.get("/KorService/areaBasedList", { params });
+
+        if (data?.length < pageSize) {
+          setHasMore(false); // 데이터가 pageSize보다 적으면 마지막 페이지로 간주
         }
 
-        const data = await api.get("/KorService/areaBasedList", { params });
-        setAccommodations(data); // 성공적으로 데이터를 상태에 저장
+        setAccommodations((prev) => [...prev, ...data]); // 기존 데이터에 추가
       } catch (err) {
         console.error("Error fetching accommodations:", err);
         setError(err?.message || "Failed to fetch accommodations.");
@@ -38,9 +41,9 @@ const useAccommodation = (areaCode = 1, sigunguCode = null) => {
     };
 
     fetchAccommodations();
-  }, [areaCode, sigunguCode]); // Dependency array
+  }, [page, pageSize]);
 
-  return { accommodations, loading, error };
+  return { accommodations, loading, error, hasMore };
 };
 
 export default useAccommodation;

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import useAccommodation from "../../hooks/useAccommodation";
+import Banner from "../component/Banner/Banner";
 
 const HomePage = () => {
   const [page, setPage] = useState(1); // 현재 페이지 번호
@@ -16,6 +17,7 @@ const HomePage = () => {
 
   return (
     <div className="container mt-4">
+      <Banner/>
       <h1>Accommodation Finder</h1>
       <p>Explore all accommodations with pagination!</p>
 

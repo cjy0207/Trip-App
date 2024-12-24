@@ -7,6 +7,7 @@ import TransportSearchPage from "./pages/SearchPage/components/TransportSearchPa
 import LeisureSearchPage from "./pages/SearchPage/components/LeisureSearchPage/LeisureSearchPage";
 import FestivalSearchPage from "./pages/SearchPage/components/FestivalSearchPage/FestivalSearchPage";
 import { Routes, Route } from "react-router-dom";
+import AccommodationSearchPage from "./pages/SearchPage/components/AccommodationSearchPage/AccommodationSearchPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
           <Route path="search" element={<SearchPage />}>
+            <Route index element={<AccommodationSearchPage />} />
             <Route path="transport" element={<TransportSearchPage />} />
             <Route path="leisure" element={<LeisureSearchPage />} />
             <Route path="festival" element={<FestivalSearchPage />} />

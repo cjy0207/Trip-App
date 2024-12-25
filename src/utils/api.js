@@ -18,7 +18,9 @@ const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    console.log("요청 시작:", config);
+    if (process.env.NODE_ENV === "development") {
+      console.log("요청 시작:", config);
+    }
     return config;
   },
   (error) => {
@@ -29,7 +31,9 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
   (response) => {
-    console.log("응답 성공:", response);
+    if (process.env.NODE_ENV === "development") {
+      console.log("응답 성공:", response);
+    }
     return response?.data?.response?.body?.items?.item || [];
   },
   (error) => {

@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import api from "../utils/api";
 
 /**
- * Custom hook to fetch search results.
+ * Custom hook to fetch search results for multiple content types.
  * @param {string} query - The search keyword.
+ * @param {number[]} contentTypeIds - Array of content types to search for.
  * @param {number} page - The page number for pagination.
  * @param {number} pageSize - The number of items per page.
  * @returns {object} { results, loading, error, hasMore }
  */
-const useSearch = (query = "", page = 1, pageSize = 10) => {
+const useSearch = (query = "", contentTypeIds = [], page = 1, pageSize = 10) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -16,28 +17,35 @@ const useSearch = (query = "", page = 1, pageSize = 10) => {
 
   useEffect(() => {
     const fetchSearchResults = async () => {
+      if (!query) return;
+
       setLoading(true);
       setError(null);
 
       try {
-        const params = {
-          pageNo: page,
-          numOfRows: pageSize,
-          contentTypeId: 32, // 숙박 시설의 contentTypeId
-          keyword: query, // 검색어
-        };
+        const requests = contentTypeIds.map((contentTypeId) => {
+          const params = {
+            pageNo: page,
+            numOfRows: pageSize,
+            contentTypeId,
+            keyword: query,
+          };
 
-        const data = await api.get("/KorService/searchKeyword", { params });
+          return api.get("/KorService/searchKeyword", { params });
+        });
 
-        if (data?.length < pageSize) {
-          setHasMore(false);
-        }
+        const responses = await Promise.all(requests);
+        const combinedResults = responses.flat();
 
+        // 데이터를 초기화하거나 추가
         if (page === 1) {
-          setResults(data); // 첫 페이지는 데이터 초기화
+          setResults(combinedResults); // 첫 페이지
         } else {
-          setResults((prev) => [...prev, ...data]); // 이후 페이지는 데이터 추가
+          setResults((prev) => [...prev, ...combinedResults]); // 이후 페이지 추가
         }
+
+        // 더 가져올 데이터가 있는지 확인
+        setHasMore(combinedResults.length >= contentTypeIds.length * pageSize);
       } catch (err) {
         console.error("Error fetching search results:", err);
         setError(err?.message || "Failed to fetch search results.");
@@ -46,10 +54,8 @@ const useSearch = (query = "", page = 1, pageSize = 10) => {
       }
     };
 
-    if (query) {
-      fetchSearchResults();
-    }
-  }, [query, page, pageSize]);
+    fetchSearchResults();
+  }, [query, contentTypeIds, page, pageSize]);
 
   return { results, loading, error, hasMore };
 };

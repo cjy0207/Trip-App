@@ -22,18 +22,17 @@ const useLeisure = (page = 1, pageSize = 10) => {
         const params = {
           pageNo: page,
           numOfRows: pageSize,
-          contentTypeId: 28, // 레저 시설의 contentTypeId
+          contentTypeId: 28, // 레저 정보의 contentTypeId
         };
 
         const data = await api.get("/KorService/areaBasedList", { params });
 
         if (data?.length < pageSize) {
-          setHasMore(false);
+          setHasMore(false); // 더 이상 데이터가 없으면 false
         }
 
-        setLeisure((prev) => [...prev, ...data]);
+        setLeisure((prev) => [...prev, ...data]); // 기존 데이터에 추가
       } catch (err) {
-        console.error("Error fetching leisure data:", err);
         setError(err?.message || "Failed to fetch leisure data.");
       } finally {
         setLoading(false);

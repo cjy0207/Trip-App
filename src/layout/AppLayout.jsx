@@ -16,7 +16,7 @@ const AppLayout = () => {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link as={Link} to="/search?query=">
+              <Nav.Link as={Link} to="/search/accommodation">
                 숙박
               </Nav.Link>
               <Nav.Link as={Link} to="/search/leisure">

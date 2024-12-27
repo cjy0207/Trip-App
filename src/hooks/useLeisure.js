@@ -1,48 +1,41 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 import api from "../utils/api";
 
 /**
- * Custom hook to fetch leisure data with pagination.
- * @param {number} page - The page number for pagination.
- * @param {number} pageSize - The number of items per page.
- * @returns {object} { leisure, loading, error, hasMore }
+ * 레저 정보를 가져오는 API 함수
+ * @param {object} params - API 요청 파라미터
+ * @returns {Promise<Array>} - 레저 데이터 배열
  */
-const useLeisure = (page = 1, pageSize = 10) => {
-  const [leisure, setLeisure] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-  const [hasMore, setHasMore] = useState(true);
+export const fetchLeisure = async ({ page = 1, pageSize = 10 }) => {
+  const params = {
+    pageNo: page,
+    numOfRows: pageSize,
+    contentTypeId: 28, // 레저 정보 contentTypeId
+  };
 
-  useEffect(() => {
-    const fetchLeisure = async () => {
-      setLoading(true);
-      setError(null);
-
-      try {
-        const params = {
-          pageNo: page,
-          numOfRows: pageSize,
-          contentTypeId: 28, // 레저 정보의 contentTypeId
-        };
-
-        const data = await api.get("/KorService/areaBasedList", { params });
-
-        if (data?.length < pageSize) {
-          setHasMore(false); // 더 이상 데이터가 없으면 false
-        }
-
-        setLeisure((prev) => [...prev, ...data]); // 기존 데이터에 추가
-      } catch (err) {
-        setError(err?.message || "Failed to fetch leisure data.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchLeisure();
-  }, [page, pageSize]);
-
-  return { leisure, loading, error, hasMore };
+  try {
+    const response = await api.get("/areaBasedList", { params });
+    return response; // Axios 인터셉터에서 데이터만 반환
+  } catch (error) {
+    console.error("Error fetching leisure data:", error);
+    throw new Error("Failed to fetch leisure data");
+  }
 };
 
-export default useLeisure;
+/**
+ * 레저 정보를 React Query로 가져오는 훅
+ * @param {number} page - 현재 페이지 번호
+ * @param {number} pageSize - 페이지당 데이터 수
+ */
+export const useLeisureQuery = (page = 1, pageSize = 10) => {
+  return useQuery({
+    queryKey: ["leisure", page, pageSize],
+    queryFn: () => fetchLeisure({ page, pageSize }),
+    keepPreviousData: true,
+    staleTime: 1000 * 60 * 5,
+    cacheTime: 1000 * 60 * 10,
+    onError: (error) => {
+      console.error("Error loading leisure data:", error);
+    },
+  });
+};

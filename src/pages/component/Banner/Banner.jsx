@@ -19,7 +19,7 @@ const Banner = ({ onSearch }) => {
         <div className="input-wrapper">
           <input
             type="text"
-            placeholder="숙박 이름을 입력하세요"
+            placeholder="검색어를 입력하세요"
             className="banner-input"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

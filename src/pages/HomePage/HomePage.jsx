@@ -1,78 +1,55 @@
 import React, { useState } from "react";
-import useAccommodation from "../../hooks/useAccommodation"; // 적절한 경로로 수정
+import { Link } from "react-router-dom";
+import useAccommodation from "../../hooks/useAccommodation";
 
 const HomePage = () => {
-  // 지역 코드와 세부 지역 코드를 관리하는 상태
-  const [areaCode, setAreaCode] = useState(1); // 기본값: 1 (서울)
-  const [sigunguCode, setSigunguCode] = useState(null); // 세부 지역 코드
+  const [areaCode, setAreaCode] = useState(1);
+  const [sigunguCode, setSigunguCode] = useState(null);
 
-  // useAccommodation 훅으로 데이터 가져오기
   const { accommodations, loading, error } = useAccommodation(areaCode, sigunguCode);
 
-  // 지역 코드 변경 핸들러
-  const handleAreaChange = (e) => {
-    setAreaCode(Number(e.target.value));
-    setSigunguCode(null); // 세부 지역 코드는 초기화
+  const handleAreaChange = (area) => {
+    setAreaCode(area);
+    setSigunguCode(null);
   };
 
-  // 세부 지역 코드 변경 핸들러
-  const handleSigunguChange = (e) => {
-    setSigunguCode(Number(e.target.value));
-  };
+  const areaData = [
+    { code: 1, name: "Seoul", image: "seoul.jpg" },
+    { code: 39, name: "Jeju", image: "jeju.jpg" },
+    { code: 32, name: "Gangneung", image: "gangneung.jpg" },
+    { code: 5, name: "Busan", image: "busan.jpg" }
+  ];
 
   return (
     <div className="container mt-4">
-      <h1>Accommodation Finder</h1>
-      <p>Explore accommodations in different regions of Korea!</p>
+      <h1>Select Area</h1>
 
-      {/* 지역 선택 */}
-      <div className="mb-3">
-        <label htmlFor="areaCode" className="form-label">
-          Select Area:
-        </label>
-        <select
-          id="areaCode"
-          className="form-select"
-          value={areaCode}
-          onChange={handleAreaChange}
-        >
-          <option value={1}>Seoul</option>
-          <option value={2}>Incheon</option>
-          <option value={3}>Daejeon</option>
-          <option value={4}>Daegu</option>
-          <option value={5}>Busan</option>
-          {/* 필요한 지역 코드를 추가 */}
-        </select>
+      <div className="row mb-3">
+        {areaData.map((area) => (
+          <div key={area.code} className="col-md-3 mb-4">
+            <div
+              className="card"
+              style={{ cursor: "pointer" }}
+              onClick={() => handleAreaChange(area.code)}
+            >
+              <img
+                src={`path/to/images/${area.image}`} 
+                className="card-img-top"
+                alt={area.name}
+              />
+              <div className="card-body">
+                <h5 className="card-title">{area.name}</h5>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
 
-      {/* 세부 지역 선택 */}
-      {areaCode && (
-        <div className="mb-3">
-          <label htmlFor="sigunguCode" className="form-label">
-            Select Sub-Area (optional):
-          </label>
-          <select
-            id="sigunguCode"
-            className="form-select"
-            value={sigunguCode || ""}
-            onChange={handleSigunguChange}
-          >
-            <option value="">-- Select Sub-Area --</option>
-            <option value={1}>Gangnam</option>
-            <option value={2}>Jongno</option>
-            <option value={3}>Mapo</option>
-            {/* 필요한 세부 지역 코드를 추가 */}
-          </select>
-        </div>
-      )}
+      <h1>Accommodation Recommend</h1>
 
-      {/* 로딩 상태 표시 */}
       {loading && <p>Loading accommodations...</p>}
-
-      {/* 에러 메시지 표시 */}
       {error && <p className="text-danger">Error: {error}</p>}
 
-      {/* 숙박 데이터 출력 */}
       <div className="row">
         {accommodations?.length > 0 ? (
           accommodations.map((item) => (
@@ -84,6 +61,13 @@ const HomePage = () => {
                   <p className="card-text">
                     {item.tel ? `Contact: ${item.tel}` : "No contact available"}
                   </p>
+                  <Link
+                    to={`/detail/${item.contentid}`}
+                    state={{ hotel: item }}
+                    className="btn btn-primary"
+                  >
+                    View Details
+                  </Link>
                 </div>
               </div>
             </div>

@@ -13,6 +13,7 @@ export const fetchAccommodation = async ({ page = 1, pageSize = 10 }) => {
     contentTypeId: 32, // 숙박 정보 contentTypeId
   };
 
+
   try {
     const response = await api.get("/areaBasedList", { params });
     return response;

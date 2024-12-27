@@ -1,47 +1,81 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAccommodationQuery } from "../../hooks/useAccommodation";
-import Banner from "../component/Banner/Banner";
+import { Link } from "react-router-dom";
+import useAccommodation from "../../hooks/useAccommodation";
 
 const HomePage = () => {
-  const [page, setPage] = useState(1);
-  const pageSize = 10;
-  const navigate = useNavigate();
+  const [areaCode, setAreaCode] = useState(1);
+  const [sigunguCode, setSigunguCode] = useState(null);
 
-  // React Query 훅을 통해 숙박 정보 가져오기
-  const { data: accommodations, isLoading, isError, error } = useAccommodationQuery(page, pageSize);
+  const { accommodations, loading, error } = useAccommodation(areaCode, sigunguCode);
 
-  const loadMore = () => {
-    setPage((prevPage) => prevPage + 1);
+  const handleAreaChange = (area) => {
+    setAreaCode(area);
+    setSigunguCode(null);
   };
 
-  // 배너 검색 핸들러: 검색어를 검색 페이지로 전달
-  const handleSearch = (query) => {
-    navigate(`/search?query=${encodeURIComponent(query)}`); // 검색창으로 이동
-  };
+  const areaData = [
+    { code: 1, name: "Seoul", image: "seoul.jpg" },
+    { code: 39, name: "Jeju", image: "jeju.jpg" },
+    { code: 32, name: "Gangneung", image: "gangneung.jpg" },
+    { code: 5, name: "Busan", image: "busan.jpg" }
+  ];
 
   return (
     <div className="container mt-4">
-      <Banner onSearch={handleSearch} />
-      <h1>Home Page</h1>
-      <p>Explore accommodations!</p>
+      <h1>Select Area</h1>
 
-      <section>
-        <h2>Accommodations</h2>
-        {isLoading && <p>Loading accommodations...</p>}
-        {isError && <p>Error: {error.message}</p>}
-        <div className="list">
-          {accommodations?.map((item) => (
-            <div key={item.contentid} className="list-item">
-              <h4>{item.title}</h4>
-              <p>{item.addr1}</p>
+      <div className="row mb-3">
+        {areaData.map((area) => (
+          <div key={area.code} className="col-md-3 mb-4">
+            <div
+              className="card"
+              style={{ cursor: "pointer" }}
+              onClick={() => handleAreaChange(area.code)}
+            >
+              <img
+                src={`path/to/images/${area.image}`} 
+                className="card-img-top"
+                alt={area.name}
+              />
+              <div className="card-body">
+                <h5 className="card-title">{area.name}</h5>
+              </div>
             </div>
-          ))}
-        </div>
-        <button onClick={loadMore} disabled={isLoading}>
-          {isLoading ? "Loading..." : "Load More"}
-        </button>
-      </section>
+          </div>
+        ))}
+      </div>
+
+      <h1>Accommodation Recommend</h1>
+
+      {loading && <p>Loading accommodations...</p>}
+      {error && <p className="text-danger">Error: {error}</p>}
+
+      <div className="row">
+        {accommodations?.length > 0 ? (
+          accommodations.map((item) => (
+            <div key={item.contentid} className="col-md-4 mb-4">
+              <div className="card">
+                <div className="card-body">
+                  <h5 className="card-title">{item.title}</h5>
+                  <p className="card-text">{item.addr1}</p>
+                  <p className="card-text">
+                    {item.tel ? `Contact: ${item.tel}` : "No contact available"}
+                  </p>
+                  <Link
+                    to={`/detail/${item.contentid}`}
+                    state={{ hotel: item }}
+                    className="btn btn-primary"
+                  >
+                    View Details
+                  </Link>
+                </div>
+              </div>
+            </div>
+          ))
+        ) : (
+          !loading && <p>No accommodations found for the selected area.</p>
+        )}
+      </div>
     </div>
   );
 };

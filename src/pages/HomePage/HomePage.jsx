@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import useAccommodation from "../../hooks/useAccommodation";
+import { useAccommodationQuery } from "../../hooks/useAccommodation";
 
 const HomePage = () => {
   const [areaCode, setAreaCode] = useState(1);
   const [sigunguCode, setSigunguCode] = useState(null);
 
-  const { accommodations, loading, error } = useAccommodation(areaCode, sigunguCode);
+  const { accommodations, loading, error } = useAccommodationQuery(areaCode, sigunguCode);
 
   const handleAreaChange = (area) => {
     setAreaCode(area);

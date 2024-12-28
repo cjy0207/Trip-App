@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
@@ -10,9 +10,9 @@ const SearchPage = () => {
   const filterFromUrl = searchParams.get("filter") || "all";
 
   const [page, setPage] = useState(1);
+  const [allResults, setAllResults] = useState([]); 
   const pageSize = 10;
 
-  // 검색 필터: 숙박 (32), 레저 (28), 축제 (15), 여행 코스 (25)
   const filters = {
     accommodation: 32,
     leisure: 28,
@@ -20,7 +20,6 @@ const SearchPage = () => {
     tourCourse: 25,
   };
 
-  // React Query를 사용해 검색 결과 가져오기
   const { data: results, isLoading, isError, error } = useSearchQuery(
     keywordFromUrl,
     page,
@@ -28,14 +27,22 @@ const SearchPage = () => {
     filterFromUrl === "all" ? Object.values(filters) : [filters[filterFromUrl]]
   );
 
+  useEffect(() => {
+    if (results) {
+      setAllResults((prevResults) => [...prevResults, ...results]);
+    }
+  }, [results]);
+
   const handleSearch = (query) => {
     setSearchParams({ query, filter: "all" });
-    setPage(1); // 검색어 변경 시 페이지 초기화
+    setPage(1); 
+    setAllResults([]); 
   };
 
   const handleFilterChange = (filter) => {
     setSearchParams({ query: keywordFromUrl, filter });
-    setPage(1); // 필터 변경 시 페이지 초기화
+    setPage(1); 
+    setAllResults([]); 
   };
 
   const loadMore = () => {
@@ -83,17 +90,21 @@ const SearchPage = () => {
         </button>
       </div>
 
-      {isLoading && <p>Loading results...</p>}
+      {isLoading && page === 1 && <p>Loading results...</p>}
       {isError && <p>Error: {error.message}</p>}
-      {!isLoading && results?.length === 0 && <p>No results found.</p>}
+      {!isLoading && allResults.length === 0 && <p>No results found.</p>}
 
-      {!isLoading && results?.length > 0 && (
-        <CardList items={results} itemType={filterFromUrl} />
-      )}
+      <CardList items={allResults} itemType={filterFromUrl} />
 
       {results?.length > 0 && (
-        <div className="text-center mt-4">
-          <button onClick={loadMore} className="btn btn-success" disabled={isLoading}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+          }}
+        >
+          <button onClick={loadMore} className="btn btn-success mb-5" disabled={isLoading}>
             {isLoading ? "Loading..." : "Load More"}
           </button>
         </div>

@@ -1,25 +1,70 @@
-.card {
-    border: none;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-  }
-  
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .card-body {
-    padding: 15px;
-  }
-  
-  .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .card img {
-    border-bottom: 1px solid #ddd;
-  }
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5x; 
+  padding: 1rem;
+}
+
+.card-horizontal {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 200px;
+  margin-bottom: 2rem; 
+}
+
+.card-horizontal:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-horizontal-img {
+  width: 250px;
+  height: 200px;
+  object-fit: cover;
+  border-right: 1px solid #ddd;
+}
+
+.card-horizontal-body {
+  flex: 1;
+  padding: 20px;
+}
+
+.card-horizontal-title {
+  font-size: 1.6rem;
+  font-weight: bold;
+  margin-bottom: 0.7rem;
+}
+
+.card-horizontal-location {
+  font-size: 1.1rem;
+  color: #6c757d;
+  margin-bottom: 1.5rem;
+}
+
+.card-horizontal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.score-badge {
+  font-size: 1.2rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 15px;
+}
+
+.card-horizontal-price {
+  text-align: right;
+}
+
+.card-horizontal-price .small-text {
+  display: block;
+  font-size: 0.9rem;
+  color: #6c757d;
+  margin-top: 0.3rem;
+}

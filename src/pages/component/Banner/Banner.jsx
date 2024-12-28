@@ -9,7 +9,7 @@ const Banner = ({ onSearch }) => {
   const handleSearch = (e) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      onSearch(searchQuery); // 검색어를 부모로 전달
+      onSearch(searchQuery); 
     }
   };
 

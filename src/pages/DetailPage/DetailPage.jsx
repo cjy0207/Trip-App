@@ -17,8 +17,8 @@ const DetailPage = () => {
   }
 
   return (
-    <div className="detail-page">
-      <div className="detail-images">
+    <div className="detail-detail-page">
+      <div className="detail-detail-images">
         {detailData.firstimage ? (
           <img src={detailData.firstimage} alt={detailData.title} />
         ) : (
@@ -26,14 +26,14 @@ const DetailPage = () => {
         )}
       </div>
 
-      <div className="detail-info">
+      <div className="detail-detail-info">
         <h1>{detailData.title}</h1>
         <p>{detailData.addr1}</p>
         <p>{detailData.addr2}</p>
         <p>{detailData.zipcode}</p>
         <p>{detailData.tel}</p>
         <p>{detailData.overview || "No overview available."}</p>
-        <button>예약하기</button>
+        <button className="detail-button">예약하기</button>
       </div>
     </div>
   );

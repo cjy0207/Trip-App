@@ -1,44 +1,36 @@
-import useDetailData from '../../hooks/useDetailData'; // default export로 가져오기
+import React from "react";
+import { useLocation } from "react-router-dom"; // 수정: useLocation 훅을 사용하여 전달된 state 접근
 import './DetailPage.style.css';
 
 const DetailPage = () => {
-  const { detailData, loading, error } = useDetailData('festival'); // 'hotel' 타입으로 데이터 가져오기
-  
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  const location = useLocation(); // 수정: useLocation 훅 사용
+  const { festival } = location.state || {}; // 수정: state에서 festival 데이터 가져오기
 
-  if (error) {
-    return <div>Error: {error}</div>;
-  }
-
-  if (!detailData) {
-    return <div>No hotel details available.</div>;
+  if (!festival) {
+    return <div>No festival details available.</div>; // 수정: festival 데이터가 없으면 메시지 표시
   }
 
   return (
-    <div className="detail-page">
-      <div className="detail-images">
-        {detailData.firstimage ? (
-          <img src={detailData.firstimage} alt={detailData.title} />
+    <div className="detail-detail-page">
+      <div className="detail-detail-images">
+        {festival.firstimage ? (
+          <img src={festival.firstimage} alt={festival.title} />
         ) : (
           <p>No images available</p>
         )}
       </div>
 
-      <div className="detail-info">
-        <h1>{detailData.title}</h1>
-        <p>{detailData.addr1}</p>
-        <p>{detailData.addr2}</p>
-        <p>{detailData.zipcode}</p>
-        <p>{detailData.tel}</p>
-        <p>{detailData.overview || "No overview available."}</p>
-        <button>예약하기</button>
+      <div className="detail-detail-info">
+        <h1>{festival.title}</h1>
+        <p>{festival.addr1}</p>
+        <p>{festival.addr2}</p>
+        <p>{festival.zipcode}</p>
+        <p>{festival.tel}</p>
+        <p>{festival.overview || "No overview available."}</p>
+        <button className="detail-button">예약하기</button>
       </div>
     </div>
   );
 };
 
 export default DetailPage;
-
-

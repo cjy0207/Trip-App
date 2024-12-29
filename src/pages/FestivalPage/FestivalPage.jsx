@@ -31,7 +31,7 @@ const FestivalPage = () => {
   const handleCardClick = (festival) => {
     navigate(`/search/festival/detail/${festival.contentid}`, {
       state: { festival },
-    });
+    }); // 수정: 디테일 페이지로 이동하면서 festival 데이터 전달
   };
 
   return (
@@ -54,7 +54,11 @@ const FestivalPage = () => {
         </div>
 
         <div className="col-md-8">
-          <CardList items={allFestivals} onButtonClick={handleCardButtonClick} />
+          <CardList
+            items={allFestivals}
+            onButtonClick={handleCardButtonClick}
+            onCardClick={handleCardClick} // 수정: onCardClick 전달
+          />
           {isFetching && <p>Loading more...</p>}
         </div>
       </div>

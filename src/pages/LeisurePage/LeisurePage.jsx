@@ -5,6 +5,7 @@ import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
 import Map from "../component/Map/Map";
 
+
 const LeisurePage = () => {
   const [page, setPage] = useState(1);
   const [allLeisures, setAllLeisures] = useState([]);
@@ -26,6 +27,12 @@ const LeisurePage = () => {
 
   const handleSearch = (query) => {
     navigate(`/search?query=${encodeURIComponent(query)}&filter=leisure`);
+  };
+
+  const handleCardClick = (leisureSpot) => {
+    navigate(`/search/leisure/detail/${leisureSpot.contentid}`, {
+      state: { leisureSpot },
+    });
   };
 
   return (

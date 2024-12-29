@@ -1,7 +1,7 @@
 import React from "react";
 import "./CardList.style.css";
-
 const CardList = ({ items, onButtonClick }) => {
+
   return (
     <div className="card-list">
       {items?.map((item, index) => (

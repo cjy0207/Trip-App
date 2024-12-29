@@ -5,8 +5,8 @@ import { useAccommodationQuery } from "../../hooks/useAccommodation";
 const HomePage = () => {
   const [areaCode, setAreaCode] = useState(1);
   const [sigunguCode, setSigunguCode] = useState(null);
-
   const { accommodations, loading, error } = useAccommodationQuery(areaCode, sigunguCode);
+
 
   const handleAreaChange = (area) => {
     setAreaCode(area);
@@ -14,10 +14,10 @@ const HomePage = () => {
   };
 
   const areaData = [
-    { code: 1, name: "Seoul", image: "seoul.jpg" },
-    { code: 39, name: "Jeju", image: "jeju.jpg" },
-    { code: 32, name: "Gangneung", image: "gangneung.jpg" },
-    { code: 5, name: "Busan", image: "busan.jpg" }
+    { code: 1, name: "Seoul", image: "seoul.png" },
+    { code: 39, name: "Jeju", image: "jeju.png" },
+    { code: 32, name: "Gangneung", image: "gangneung.png" },
+    { code: 5, name: "Busan", image: "busan.png" }
   ];
 
   return (
@@ -33,7 +33,7 @@ const HomePage = () => {
               onClick={() => handleAreaChange(area.code)}
             >
               <img
-                src={`path/to/images/${area.image}`} 
+                src={`/photo/${area.image}`}
                 className="card-img-top"
                 alt={area.name}
               />
@@ -48,11 +48,11 @@ const HomePage = () => {
       <h1>Accommodation Recommend</h1>
 
       {loading && <p>Loading accommodations...</p>}
-      {error && <p className="text-danger">Error: {error}</p>}
+      {error && <p className="text-danger">Error: {error.message || "Failed to load accommodations."}</p>}
 
       <div className="row">
-        {accommodations?.length > 0 ? (
-          accommodations.map((item) => (
+        {Array.isArray(accommodations) && accommodations.length > 0 ? (
+          accommodations.slice(0,3).map((item) => (
             <div key={item.contentid} className="col-md-4 mb-4">
               <div className="card">
                 <div className="card-body">

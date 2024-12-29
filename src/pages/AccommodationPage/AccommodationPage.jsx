@@ -10,7 +10,9 @@ const AccommodationPage = () => {
   const [allAccommodations, setAllAccommodations] = useState([]);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const pageSize = 10;
+
   const navigate = useNavigate(); // useNavigate 사용
+
 
   const { data: accommodations, isFetching } = useAccommodationQuery(page, pageSize);
 
@@ -29,11 +31,15 @@ const AccommodationPage = () => {
     navigate(`/search?query=${encodeURIComponent(query)}&filter=accommodation`);
   };
 
+  const handleCardClick = (hotel) => {
+    // 호텔 데이터를 state로 전달하여 디테일 페이지로 이동
+    navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } });
+  };
+
   return (
     <div className="container mt-4">
       <Banner onSearch={handleSearch} filter="accommodation" />
       <h1>Accommodations</h1>
-
       <div className="row">
         {/* 왼쪽 지도 영역 */}
         <div className="col-md-4 mb-4 mt-3">
@@ -55,7 +61,7 @@ const AccommodationPage = () => {
           <CardList items={allAccommodations} onButtonClick={handleCardButtonClick} />
           {isFetching && <p>Loading more...</p>}
         </div>
-      </div>
+      </div>        
     </div>
   );
 };

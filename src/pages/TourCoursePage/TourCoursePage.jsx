@@ -28,11 +28,16 @@ const TourCoursePage = () => {
     navigate(`/search?query=${encodeURIComponent(query)}&filter=tourCourse`);
   };
 
+  const handleCardClick = (tourCourse) => {
+    navigate(`/search/tour/detail/${tourCourse.contentid}`, {
+      state: { tourCourse },
+    });
+  };
+
   return (
     <div className="container mt-4">
       <Banner onSearch={handleSearch} filter="tourCourse" />
       <h1>Tour Courses</h1>
-
       <div className="row">
         <div className="col-md-4 mb-4 mt-3">
           <div style={{ position: "sticky", top: "80px" }}>

@@ -1,25 +1,98 @@
-.card {
-    border: none;
-    border-radius: 10px;
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px; /* 카드 간 간격 */
+  padding: 1rem;
+}
+
+.card-horizontal {
+  display: flex;
+  flex-wrap: wrap; /* 카드 내용을 모바일에서 줄바꿈 가능 */
+  align-items: center;
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  min-height: 150px;
+}
+
+.card-horizontal:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-horizontal-img {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  flex-shrink: 0; /* 이미지 크기 고정 */
+  border-right: 1px solid #ddd;
+}
+
+.card-horizontal-body {
+  flex: 1;
+  padding: 15px;
+}
+
+.card-horizontal-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.card-horizontal-location {
+  font-size: 1rem;
+  color: #6c757d;
+  margin-bottom: 0.8rem;
+}
+
+.card-horizontal-price {
+  font-size: 1rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+
+.card-horizontal-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.btn-primary {
+  font-size: 0.9rem;
+  padding: 0.4rem 0.8rem;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .card-horizontal {
+    flex-direction: column; /* 모바일에서 수직 레이아웃 */
+    align-items: flex-start;
   }
-  
-  .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+
+  .card-horizontal-img {
+    width: 100%; /* 이미지를 전체 너비로 */
+    height: auto; /* 높이는 비율에 맞게 조정 */
+    border-right: none; /* 모바일에서는 경계선 제거 */
+    border-bottom: 1px solid #ddd; /* 하단에 경계선 추가 */
   }
-  
-  .card-body {
-    padding: 15px;
+
+  .card-horizontal-body {
+    padding: 10px;
   }
-  
-  .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 10px;
+
+  .card-horizontal-title {
+    font-size: 1.2rem;
   }
-  
-  .card img {
-    border-bottom: 1px solid #ddd;
+
+  .card-horizontal-location,
+  .card-horizontal-price {
+    font-size: 0.9rem;
   }
+
+  .btn-primary {
+    width: 100%; /* 버튼을 전체 너비로 */
+    text-align: center;
+  }
+}

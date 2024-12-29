@@ -4,7 +4,6 @@ import CardList from "../component/CardList/CardList";
 import { useLeisureQuery } from "../../hooks/useLeisure";
 import Banner from "../component/Banner/Banner";
 
-
 const LeisurePage = () => {
   const [page, setPage] = useState(1);
   const pageSize = 10;
@@ -16,6 +15,12 @@ const LeisurePage = () => {
     navigate(`/search?query=${encodeURIComponent(query)}&filter=leisure`);
   };
 
+  const handleCardClick = (leisureSpot) => {
+    navigate(`/search/leisure/detail/${leisureSpot.contentid}`, {
+      state: { leisureSpot },
+    });
+  };
+
   return (
     <div className="container mt-4">
       <Banner onSearch={handleSearch} filter="leisure" />
@@ -23,7 +28,11 @@ const LeisurePage = () => {
       {isLoading && <p>Loading leisure spots...</p>}
       {isError && <p>Error: {error.message}</p>}
       {!isLoading && leisure?.length === 0 && <p>No leisure spots found.</p>}
-      <CardList items={leisure} itemType="leisure" />
+      <CardList
+        items={leisure}
+        itemType="leisure"
+        onCardClick={handleCardClick}  // onCardClick 전달
+      />
     </div>
   );
 };

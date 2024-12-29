@@ -15,6 +15,12 @@ const TourCoursePage = () => {
     navigate(`/search?query=${encodeURIComponent(query)}&filter=tourCourse`);
   };
 
+  const handleCardClick = (tourCourse) => {
+    navigate(`/search/tour/detail/${tourCourse.contentid}`, {
+      state: { tourCourse },
+    });
+  };
+
   return (
     <div className="container mt-4">
       <Banner onSearch={handleSearch} filter="tourCourse" />
@@ -22,7 +28,11 @@ const TourCoursePage = () => {
       {isLoading && <p>Loading tour courses...</p>}
       {isError && <p>Error: {error.message}</p>}
       {!isLoading && tourCourses?.length === 0 && <p>No tour courses found.</p>}
-      <CardList items={tourCourses} itemType="tourCourse" />
+      <CardList
+        items={tourCourses}
+        itemType="tourCourse"
+        onCardClick={handleCardClick}  // onCardClick 전달
+      />
     </div>
   );
 };

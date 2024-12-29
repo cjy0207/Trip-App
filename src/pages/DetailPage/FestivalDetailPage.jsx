@@ -2,7 +2,7 @@ import useDetailData from '../../hooks/useDetailData'; // default export로 가�
 import './DetailPage.style.css';
 
 const DetailPage = () => {
-  const { detailData, loading, error } = useDetailData('hotel'); // 'hotel' 타입으로 데이터 가져오기
+  const { detailData, loading, error } = useDetailData('festival'); // 'hotel' 타입으로 데이터 가져오기
   
   if (loading) {
     return <div>Loading...</div>;
@@ -40,3 +40,5 @@ const DetailPage = () => {
 };
 
 export default DetailPage;
+
+

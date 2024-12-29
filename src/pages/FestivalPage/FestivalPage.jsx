@@ -15,6 +15,12 @@ const FestivalPage = () => {
     navigate(`/search?query=${encodeURIComponent(query)}&filter=festival`);
   };
 
+  const handleCardClick = (festival) => {
+    navigate(`/search/festival/detail/${festival.contentid}`, {
+      state: { festival },
+    });
+  };
+
   return (
     <div className="container mt-4">
       <Banner onSearch={handleSearch} filter="festival" />
@@ -22,7 +28,11 @@ const FestivalPage = () => {
       {isLoading && <p>Loading festivals...</p>}
       {isError && <p>Error: {error.message}</p>}
       {!isLoading && festivals?.length === 0 && <p>No festivals found.</p>}
-      <CardList items={festivals} itemType="festival" />
+      <CardList
+        items={festivals}
+        itemType="festival"
+        onCardClick={handleCardClick}  // onCardClick 전달
+      />
     </div>
   );
 };

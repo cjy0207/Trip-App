@@ -1,8 +1,10 @@
-import useDetailData from '../../hooks/useDetailData'; // default export로 가져오기
+// src/pages/DetailPage/LeisureDetailPage.jsx
+
+import useLeisureDetailData from '../../hooks/useLeisureDetailData'; // 훅을 default export 방식으로 가져오기
 import './DetailPage.style.css';
 
-const DetailPage = () => {
-  const { detailData, loading, error } = useDetailData('hotel'); // 'hotel' 타입으로 데이터 가져오기
+const LeisureDetailPage = () => {
+  const { detailData, loading, error } = useLeisureDetailData('leisure'); // 'leisure' 타입 데이터 가져오기
   
   if (loading) {
     return <div>Loading...</div>;
@@ -13,7 +15,7 @@ const DetailPage = () => {
   }
 
   if (!detailData) {
-    return <div>No hotel details available.</div>;
+    return <div>No leisure details available.</div>;
   }
 
   return (
@@ -39,4 +41,4 @@ const DetailPage = () => {
   );
 };
 
-export default DetailPage;
+export default LeisureDetailPage;

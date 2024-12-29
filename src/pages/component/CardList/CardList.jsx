@@ -2,12 +2,12 @@ import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./CardList.style.css";
 
-const CardList = ({ items, itemType }) => {
+const CardList = ({ items, itemType, onCardClick }) => {
   return (
     <div className="row">
       {items?.map((item, index) => (
         <div key={`${item.contentid}-${index}`} className="col-md-6 col-lg-4 mb-4">
-          <div className="card shadow-sm">
+          <div className="card shadow-sm" onClick={() => onCardClick(item)}>
             <img
               src={item.firstimage || "https://via.placeholder.com/300"}
               alt={item.title}

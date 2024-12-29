@@ -3,58 +3,56 @@ import { useNavigate } from "react-router-dom";
 import { useLeisureQuery } from "../../hooks/useLeisure";
 import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
+import Map from "../component/Map/Map";
 
 const LeisurePage = () => {
   const [page, setPage] = useState(1);
   const [allLeisures, setAllLeisures] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const pageSize = 10;
   const navigate = useNavigate();
 
-  const { data: leisures, isLoading, isError, error, isFetching } = useLeisureQuery(page, pageSize);
+  const { data: leisures, isFetching } = useLeisureQuery(page, pageSize);
 
   useEffect(() => {
     if (leisures) {
-      setAllLeisures((prevLeisures) => [...prevLeisures, ...leisures]);
+      setAllLeisures((prev) => [...prev, ...leisures]);
     }
   }, [leisures]);
 
-  const handleSearch = (query) => {
-    navigate(`/search?query=${encodeURIComponent(query)}&filter=leisure`);
+  const handleCardButtonClick = (location) => {
+    setSelectedLocation(location);
   };
 
-  const loadMoreLeisures = () => {
-    setPage((prevPage) => prevPage + 1);
+  const handleSearch = (query) => {
+    navigate(`/search?query=${encodeURIComponent(query)}&filter=leisure`);
   };
 
   return (
     <div className="container mt-4">
       <Banner onSearch={handleSearch} filter="leisure" />
       <h1>Leisure Activities</h1>
-      {isLoading && page === 1 && <p>Loading leisure activities...</p>}
-      {isError && <p>Error: {error.message}</p>}
-      {!isLoading && allLeisures.length === 0 && <p>No leisure activities found.</p>}
 
-      <CardList items={allLeisures} itemType="leisure" />
-
-      {isFetching && <p>Loading more leisure activities...</p>}
-
-      {!isFetching && leisures?.length === pageSize && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-          }}
-        >
-          <button
-            className="btn btn-success mb-5"
-            onClick={loadMoreLeisures}
-            disabled={isFetching}
-          >
-            Load More
-          </button>
+      <div className="row">
+        <div className="col-md-4 mb-4 mt-3">
+          <div style={{ position: "sticky", top: "80px" }}>
+            {selectedLocation ? (
+              <Map
+                latitude={selectedLocation.lat}
+                longitude={selectedLocation.lng}
+                address={selectedLocation.address}
+              />
+            ) : (
+              <p>지도를 보려면 "지도 보기" 버튼을 클릭하세요.</p>
+            )}
+          </div>
         </div>
-      )}
+
+        <div className="col-md-8">
+          <CardList items={allLeisures} onButtonClick={handleCardButtonClick} />
+          {isFetching && <p>Loading more...</p>}
+        </div>
+      </div>
     </div>
   );
 };

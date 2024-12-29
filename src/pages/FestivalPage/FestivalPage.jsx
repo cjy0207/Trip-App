@@ -1,60 +1,58 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useFestivalQuery } from "../../hooks/useFestival";
 import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
+import Map from "../component/Map/Map";
 
 const FestivalPage = () => {
   const [page, setPage] = useState(1);
-  const [allFestivals, setAllFestivals] = useState([]); 
+  const [allFestivals, setAllFestivals] = useState([]);
+  const [selectedLocation, setSelectedLocation] = useState(null);
   const pageSize = 10;
   const navigate = useNavigate();
 
-  const { data: festivals, isLoading, isError, error, isFetching } = useFestivalQuery(page, pageSize);
+  const { data: festivals, isFetching } = useFestivalQuery(page, pageSize);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (festivals) {
-      setAllFestivals((prevFestivals) => [...prevFestivals, ...festivals]);
+      setAllFestivals((prev) => [...prev, ...festivals]);
     }
   }, [festivals]);
 
-  const handleSearch = (query) => {
-    navigate(`/search?query=${encodeURIComponent(query)}&filter=festival`);
+  const handleCardButtonClick = (location) => {
+    setSelectedLocation(location);
   };
 
-  const loadMoreFestivals = () => {
-    setPage((prevPage) => prevPage + 1); 
+  const handleSearch = (query) => {
+    navigate(`/search?query=${encodeURIComponent(query)}&filter=festival`);
   };
 
   return (
     <div className="container mt-4">
       <Banner onSearch={handleSearch} filter="festival" />
       <h1>Festivals</h1>
-      {isLoading && page === 1 && <p>Loading festivals...</p>} 
-      {isError && <p>Error: {error.message}</p>}
-      {!isLoading && allFestivals.length === 0 && <p>No festivals found.</p>}
-      
-      <CardList items={allFestivals} itemType="festival" />
-      
-      {isFetching && <p>Loading more festivals...</p>} 
-      
-      {!isFetching && festivals?.length === pageSize && ( 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center", 
-            marginTop: "20px", 
-          }}
-        >
-          <button
-            className="btn btn-success mb-5"
-            onClick={loadMoreFestivals}
-            disabled={isFetching}
-          >
-            Load More
-          </button>
+
+      <div className="row">
+        <div className="col-md-4 mb-4 mt-3">
+          <div style={{ position: "sticky", top: "80px" }}>
+            {selectedLocation ? (
+              <Map
+                latitude={selectedLocation.lat}
+                longitude={selectedLocation.lng}
+                address={selectedLocation.address}
+              />
+            ) : (
+              <p>지도를 보려면 "지도 보기" 버튼을 클릭하세요.</p>
+            )}
+          </div>
         </div>
-      )}
+
+        <div className="col-md-8">
+          <CardList items={allFestivals} onButtonClick={handleCardButtonClick} />
+          {isFetching && <p>Loading more...</p>}
+        </div>
+      </div>
     </div>
   );
 };

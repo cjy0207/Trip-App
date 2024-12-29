@@ -1,62 +1,71 @@
 import React, { useEffect } from "react";
 
-const Map = ({ latitude = 37.5665, longitude = 126.9780, width = "100%", height = "300px" }) => {
+const Map = ({ latitude, longitude, address, width = "100%", height = "400px" }) => {
   useEffect(() => {
-    const initializeMap = (lat, lng) => {
-      // 기존에 스크립트가 추가되어 있다면 중복 추가를 방지
+    const loadKakaoMaps = () => {
       if (!document.querySelector(`script[src*="kakao.com/v2/maps/sdk.js"]`)) {
         const script = document.createElement("script");
-        script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&autoload=false`;
+        script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAO_MAP_API_KEY}&autoload=false&libraries=services`;
         script.async = true;
 
         script.onload = () => {
           window.kakao.maps.load(() => {
-            const container = document.getElementById("map");
-            const options = {
-              center: new window.kakao.maps.LatLng(lat, lng), // 중심 좌표
-              level: 3, // 확대 레벨
-            };
-            const map = new window.kakao.maps.Map(container, options);
-
-            // 현재 위치에 마커 추가
-            const markerPosition = new window.kakao.maps.LatLng(lat, lng);
-            const marker = new window.kakao.maps.Marker({
-              position: markerPosition,
-            });
-            marker.setMap(map);
+            if (latitude && longitude) {
+              initializeMap(latitude, longitude);
+            } else if (address) {
+              geocodeAddress(address);
+            }
           });
         };
 
         document.head.appendChild(script);
-      } else {
-        // 이미 로드된 스크립트가 있는 경우, 바로 지도 초기화
+      } else if (window.kakao && window.kakao.maps) {
         window.kakao.maps.load(() => {
-          const container = document.getElementById("map");
-          const options = {
-            center: new window.kakao.maps.LatLng(lat, lng), // 중심 좌표
-            level: 3, // 확대 레벨
-          };
-          const map = new window.kakao.maps.Map(container, options);
-
-          // 현재 위치에 마커 추가
-          const markerPosition = new window.kakao.maps.LatLng(lat, lng);
-          const marker = new window.kakao.maps.Marker({
-            position: markerPosition,
-          });
-          marker.setMap(map);
+          if (latitude && longitude) {
+            initializeMap(latitude, longitude);
+          } else if (address) {
+            geocodeAddress(address);
+          }
         });
       }
     };
 
-    initializeMap(latitude, longitude);
-  }, [latitude, longitude]);
+    const geocodeAddress = (addr) => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+      geocoder.addressSearch(addr, (result, status) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          const { y, x } = result[0];
+          initializeMap(parseFloat(y), parseFloat(x));
+        } else {
+          console.error("주소 변환 실패:", status);
+        }
+      });
+    };
+
+    const initializeMap = (lat, lng) => {
+      const container = document.getElementById("map");
+      const options = {
+        center: new window.kakao.maps.LatLng(lat, lng),
+        level: 3,
+      };
+      const map = new window.kakao.maps.Map(container, options);
+
+      const markerPosition = new window.kakao.maps.LatLng(lat, lng);
+      const marker = new window.kakao.maps.Marker({
+        position: markerPosition,
+      });
+      marker.setMap(map);
+    };
+
+    loadKakaoMaps();
+  }, [latitude, longitude, address]);
 
   return (
     <div
       id="map"
       style={{
-        width: width,
-        height: height,
+        width:"100%",
+        height:"300px",
         marginBottom: "20px",
         borderRadius: "10px",
         boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",

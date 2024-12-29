@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link, Outlet } from "react-router-dom";
 
 const AppLayout = () => {
+  const [expanded, setExpanded] = useState(false); // Navbar 상태 관리
+
+  const handleToggle = () => setExpanded(!expanded);
+  const handleClose = () => setExpanded(false); // 메뉴 클릭 시 닫기
+
   return (
     <div>
-      <Navbar bg="light" expand="lg" className="shadow-sm">
+      <Navbar bg="light" expand="lg" expanded={expanded} className="shadow-sm">
         <Container>
           {/* 로고 */}
           <Navbar.Brand as={Link} to="/" className="text-success fw-bold">
@@ -13,19 +18,19 @@ const AppLayout = () => {
           </Navbar.Brand>
 
           {/* 카테고리 메뉴 */}
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
+          <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleToggle} />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link as={Link} to="/search/accommodation">
+              <Nav.Link as={Link} to="/search/accommodation" onClick={handleClose}>
                 숙박
               </Nav.Link>
-              <Nav.Link as={Link} to="/search/leisure">
+              <Nav.Link as={Link} to="/search/leisure" onClick={handleClose}>
                 레저
               </Nav.Link>
-              <Nav.Link as={Link} to="/search/festival">
+              <Nav.Link as={Link} to="/search/festival" onClick={handleClose}>
                 축제
               </Nav.Link>
-              <Nav.Link as={Link} to="/search/tour">
+              <Nav.Link as={Link} to="/search/tour" onClick={handleClose}>
                 여행코스
               </Nav.Link>
             </Nav>
@@ -40,7 +45,7 @@ const AppLayout = () => {
                 />
                 KRW
               </Nav.Link>
-              <Nav.Link as={Link} to="/login" className="ms-3">
+              <Nav.Link as={Link} to="/login" className="ms-3" onClick={handleClose}>
                 로그인
               </Nav.Link>
             </Nav>

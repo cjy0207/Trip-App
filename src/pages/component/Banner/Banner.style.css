@@ -6,34 +6,34 @@
   }
   
   .banner-form {
-    width: 80%; /* 검색 창의 너비 */
+    width: 80%; 
     max-width: 600px;
   }
   
   .input-wrapper {
-    position: relative; /* 아이콘을 입력창 내부에 배치하기 위한 상대 위치 */
+    position: relative; 
     width: 100%;
   }
   
   .banner-input {
     width: 100%;
-    border-radius: 50px; /* 둥근 모서리 */
+    border-radius: 50px; 
     border: none;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
     font-size: 16px;
     padding: 10px 20px;
-    padding-right: 50px; /* 아이콘과 텍스트 간격 확보 */
+    padding-right: 50px; 
   }
   
   .banner-input:focus {
     outline: none;
-    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); /* 포커스 상태에서 강조 */
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2); 
   }
   
   .banner-icon-btn {
     position: absolute;
-    right: 15px; /* 입력 필드 안 우측에 위치 */
-    top: 50%; /* 수직 중앙 정렬 */
+    right: 15px; 
+    top: 50%; 
     transform: translateY(-50%);
     background: transparent;
     border: none;
@@ -41,10 +41,10 @@
   }
   
   .banner-icon {
-    font-size: 20px; /* 검색 아이콘 크기 */
-    color: #28a745; /* 검색 아이콘 색상 */
+    font-size: 20px; 
+    color: #28a745; 
   }
   
   .banner-icon-btn:hover .banner-icon {
-    color: #1e7e34; /* 호버 시 아이콘 색상 */
+    color: #1e7e34; 
   }

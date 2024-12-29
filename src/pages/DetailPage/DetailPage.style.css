@@ -1,5 +1,5 @@
 /* 1. 전체 컨테이너 중앙 정렬 */
-.detail-page {
+.detail-detail-page {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -12,14 +12,14 @@
 }
 
 /* 2. 이미지 스타일 */
-.detail-images {
+.detail-detail-images {
   width: 100%;
   display: flex; /* 부모 요소에서 이미지 중앙 정렬 */
   justify-content: center;
   margin-bottom: 20px;
 }
 
-.detail-images img {
+.detail-detail-images img {
   max-width: 100%;
   max-height: 400px;
   border-radius: 8px;
@@ -27,18 +27,18 @@
 }
 
 /* 3. 정보 섹션 스타일 */
-.detail-info {
+.detail-detail-info {
   text-align: center;
 }
 
-.detail-info h1 {
+.detail-detail-info h1 {
   font-size: 28px;
   font-weight: bold;
   color: #333;
   margin-bottom: 12px;
 }
 
-.detail-info p {
+.detail-detail-info p {
   font-size: 16px;
   color: #555;
   line-height: 1.5;
@@ -46,7 +46,7 @@
 }
 
 /* 4. 버튼 스타일 */
-button {
+.detail-button {
   display: inline-block;
   background-color: #3BCF36;
   color: white;
@@ -60,30 +60,30 @@ button {
   margin-top: 20px;
 }
 
-button:hover {
+.detail-button:hover {
   background-color: #33b030;
   transform: scale(1.05);
 }
 
-button:focus {
+.detail-button:focus {
   outline: none;
 }
 
 /* 5. 반응형 디자인 */
 @media (max-width: 768px) {
-  .detail-page {
+  .detail-detail-page {
     padding: 15px;
   }
 
-  .detail-info h1 {
+  .detail-detail-info h1 {
     font-size: 24px;
   }
 
-  .detail-info p {
+  .detail-detail-info p {
     font-size: 14px;
   }
 
-  button {
+  .detail-button {
     font-size: 14px;
     padding: 10px 20px;
   }

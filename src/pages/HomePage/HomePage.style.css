@@ -1,11 +1,9 @@
-.btn-primary {
-    background-color: #3BCF36;
-    border-color: #3BCF36;
-  }
-  
-  .btn-primary:hover {
-    background-color: #32a72e; /* A slightly darker shade for hover effect */
-    border-color: #32a72e;
-  }
-  
-  
+.home-btn-primary {
+  background-color: #3BCF36;
+  border-color: #3BCF36;
+}
+
+.home-btn-primary:hover {
+  background-color: #32a72e; /* A slightly darker shade for hover effect */
+  border-color: #32a72e;
+}

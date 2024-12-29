@@ -1,27 +1,29 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAccommodationQuery } from "../../hooks/useAccommodation";
+import Banner from "../component/Banner/Banner.jsx";
+import "./HomePage.style.css";
 
 const HomePage = () => {
-  const [areaCode, setAreaCode] = useState(1);
-  const [sigunguCode, setSigunguCode] = useState(null);
-  const { accommodations, loading, error } = useAccommodationQuery(areaCode, sigunguCode);
+  const [areaCode, setAreaCode] = useState(1); // 선택한 지역 코드
 
+  // useAccommodationQuery에 areaCode만 사용 (페이지 매개변수 제거)
+  const { data: accommodations, isLoading, isError, error } = useAccommodationQuery(areaCode); 
 
   const handleAreaChange = (area) => {
-    setAreaCode(area);
-    setSigunguCode(null);
+    setAreaCode(area); // 선택된 지역 코드 업데이트
   };
 
   const areaData = [
     { code: 1, name: "Seoul", image: "seoul.png" },
     { code: 39, name: "Jeju", image: "jeju.png" },
     { code: 32, name: "Gangneung", image: "gangneung.png" },
-    { code: 5, name: "Busan", image: "busan.png" }
+    { code: 5, name: "Busan", image: "busan.png" },
   ];
 
   return (
     <div className="container mt-4">
+      <Banner />
       <h1>Select Area</h1>
 
       <div className="row mb-3">
@@ -30,7 +32,7 @@ const HomePage = () => {
             <div
               className="card"
               style={{ cursor: "pointer" }}
-              onClick={() => handleAreaChange(area.code)}
+              onClick={() => handleAreaChange(area.code)} // 클릭 이벤트 추가
             >
               <img
                 src={`/photo/${area.image}`}
@@ -47,12 +49,17 @@ const HomePage = () => {
 
       <h1>Accommodation Recommend</h1>
 
-      {loading && <p>Loading accommodations...</p>}
-      {error && <p className="text-danger">Error: {error.message || "Failed to load accommodations."}</p>}
+      {isLoading && <p>Loading accommodations...</p>}
+
+      {isError && (
+        <p className="text-danger">
+          Error: {error.message || "Failed to load accommodations."}
+        </p>
+      )}
 
       <div className="row">
         {Array.isArray(accommodations) && accommodations.length > 0 ? (
-          accommodations.slice(0,3).map((item) => (
+          accommodations.slice(0, 3).map((item) => ( // 슬라이스 추가
             <div key={item.contentid} className="col-md-4 mb-4">
               <div className="card">
                 <div className="card-body">
@@ -64,7 +71,7 @@ const HomePage = () => {
                   <Link
                     to={`/detail/${item.contentid}`}
                     state={{ hotel: item }}
-                    className="btn btn-primary"
+                    className="home-btn-primary btn"
                   >
                     View Details
                   </Link>
@@ -73,7 +80,7 @@ const HomePage = () => {
             </div>
           ))
         ) : (
-          !loading && <p>No accommodations found for the selected area.</p>
+          !isLoading && <p>No accommodations found for the selected area.</p>
         )}
       </div>
     </div>

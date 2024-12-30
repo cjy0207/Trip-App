@@ -1,3 +1,20 @@
+.home-banner {
+  display: flex;
+  justify-content: center;
+  align-items:  center; 
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 1)),
+              url('../../../public/photo/banner-back.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  height: 300px; 
+  width: 100%; 
+  margin: 0; 
+  padding: 0;
+  position: relative; 
+  box-sizing: border-box;
+}
+
 .home-btn-primary {
   background-color: #3BCF36;
   border-color: #3BCF36;

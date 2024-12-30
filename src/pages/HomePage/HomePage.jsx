@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // useNavigate 추가
 import { useAccommodationQuery } from "../../hooks/useAccommodation";
+
+import "./HomePage.style.css";
 import Banner from "../component/Banner/Banner.jsx"; // Banner 컴포넌트 수정 필요
 import "./HomePage.style.css";
 
@@ -29,10 +31,11 @@ const HomePage = () => {
   };
 
   return (
-    <div className="container mt-4">
-      <Banner onSearch={handleSearch} /> {/* handleSearch 함수 전달 */}
+    <div>
+      <Banner onSearch={handleSearch} className="home-banner" /> {/* handleSearch 함수 전달 */}
 
-      <h1>Select Area</h1>
+<div className="container mt-4">
+<h1>Select Area</h1>
 
       <div className="row mb-3">
         {areaData.map((area) => (
@@ -90,20 +93,8 @@ const HomePage = () => {
           !isLoading && <p>No accommodations found for the selected area.</p>
         )}
       </div>
-
-      <div className="d-flex justify-content-between mt-4">
-        <button
-          className="home-btn-primary btn"
-          onClick={handlePrevPage}
-          disabled={page === 1}
-        >
-          Previous
-        </button>
-        <span>Page {page}</span>
-        <button className="home-btn-primary btn" onClick={handleNextPage}>
-          Next
-        </button>
-      </div>
+</div>
+      
     </div>
   );
 };

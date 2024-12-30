@@ -1,20 +1,19 @@
 .card-list {
-  display: flex;
-  flex-direction: column;
-  gap: 16px; /* 카드 간 간격 */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); /* 반응형으로 열 개수 조정 */
+  gap: 1.5rem; /* 카드 간의 간격 */
   padding: 1rem;
 }
 
 .card-horizontal {
-  display: flex;
-  flex-wrap: wrap; /* 카드 내용을 모바일에서 줄바꿈 가능 */
-  align-items: center;
   background: #fff;
   border-radius: 15px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  min-height: 150px;
+  display: flex;
+  flex-direction: column; /* 수직 정렬 */
+  height: 100%; /* 카드 높이 균일하게 유지 */
 }
 
 .card-horizontal:hover {
@@ -23,20 +22,21 @@
 }
 
 .card-horizontal-img {
-  width: 150px;
-  height: 150px;
-  object-fit: cover;
-  flex-shrink: 0; /* 이미지 크기 고정 */
-  border-right: 1px solid #ddd;
+  width: 100%; /* 카드의 전체 너비 */
+  height: 180px; /* 고정된 높이 */
+  object-fit: cover; /* 이미지가 잘리지 않고 꽉 차도록 */
 }
 
 .card-horizontal-body {
-  flex: 1;
   padding: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1;
 }
 
 .card-horizontal-title {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
@@ -44,12 +44,6 @@
 .card-horizontal-location {
   font-size: 1rem;
   color: #6c757d;
-  margin-bottom: 0.8rem;
-}
-
-.card-horizontal-price {
-  font-size: 1rem;
-  color: #333;
   margin-bottom: 0.5rem;
 }
 
@@ -57,25 +51,33 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 1rem;
 }
 
-.btn-primary {
+.card-horizontal-price {
+  font-size: 1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.badge {
+  background-color: #2E9419;
+  color: white;
   font-size: 0.9rem;
-  padding: 0.4rem 0.8rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 8px;
+  display: inline-block;
+  text-align: center;
 }
 
-/* 반응형 스타일 */
+/* 반응형 디자인 */
 @media (max-width: 768px) {
   .card-horizontal {
-    flex-direction: column; /* 모바일에서 수직 레이아웃 */
-    align-items: flex-start;
+    height: auto; /* 모바일에서 높이를 자동으로 */
   }
 
   .card-horizontal-img {
-    width: 100%; /* 이미지를 전체 너비로 */
-    height: auto; /* 높이는 비율에 맞게 조정 */
-    border-right: none; /* 모바일에서는 경계선 제거 */
-    border-bottom: 1px solid #ddd; /* 하단에 경계선 추가 */
+    height: 150px; /* 모바일에서 이미지 높이 줄이기 */
   }
 
   .card-horizontal-body {
@@ -83,16 +85,11 @@
   }
 
   .card-horizontal-title {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
   }
 
   .card-horizontal-location,
   .card-horizontal-price {
     font-size: 0.9rem;
-  }
-
-  .btn-primary {
-    width: 100%; /* 버튼을 전체 너비로 */
-    text-align: center;
   }
 }

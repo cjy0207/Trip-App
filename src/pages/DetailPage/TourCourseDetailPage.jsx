@@ -2,8 +2,9 @@ import useDetailData from '../../hooks/useDetailData';
 import './DetailPage.style.css';
 
 const DetailPage = () => {
-  const { detailData, loading, error } = useDetailData('tourCourse'); // 수정: 'tourCourse'로 데이터 요청 
-  
+  const { detailData, loading, error } = useDetailData('tourCourse'); // 'tourCourse'로 데이터 요청 
+  console.log('detailData:', detailData);
+
   if (loading) {
     return <div>Loading...</div>;
   }
@@ -13,7 +14,7 @@ const DetailPage = () => {
   }
 
   if (!detailData) {
-    return <div>No tour course details available.</div>; // 수정: 'No hotel details available.'에서 'No tour course details available.'로 수정
+    return <div>No tour course details available.</div>; // 데이터가 없을 경우
   }
 
   return (
@@ -28,11 +29,8 @@ const DetailPage = () => {
 
       <div className="detail-detail-info">
         <h1>{detailData.title}</h1>
-        <p>{detailData.addr1}</p>
-        <p>{detailData.addr2}</p>
-        <p>{detailData.zipcode}</p>
-        <p>{detailData.tel}</p>
-        <p>{detailData.overview || "No overview available."}</p>
+        {/* 주소, 전화번호, 기타 정보들이 없으면 표시하지 않도록 */}
+        <p>{detailData.overview || "No overview available."}</p> {/* 개요만 표시 */}
         <button className="detail-button">예약하기</button>
       </div>
     </div>

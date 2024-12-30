@@ -7,3 +7,67 @@
   background-color: #32a72e; /* A slightly darker shade for hover effect */
   border-color: #32a72e;
 }
+
+.home-home-area-card {
+  border: none; /* 기존의 카드 테두리를 제거 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 기본 그림자 추가 */
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  cursor: pointer; /* 클릭 가능하다는 표시 */
+}
+
+.home-home-area-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 더 진한 그림자 */
+  transform: translateY(-4px); /* 약간 위로 올라가는 효과 */
+}
+
+.home-home-area-card-img {
+  border-radius: 8px 8px 0 0; /* 이미지 상단 모서리 둥글게 */
+  object-fit: cover; /* 이미지 잘리지 않도록 */
+  width: 100%; /* 카드 너비에 맞추기 */
+  height: 150px; /* 이미지 높이 고정 */
+  display: block; /* 이미지가 부모의 경계를 넘어가지 않도록 */
+}
+
+
+.home-home-area-card-body {
+  padding: 16px;
+  text-align: center; /* 텍스트를 중앙 정렬 */
+}
+
+.home-home-area-card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+
+.home-home-card {
+  border: none; /* 기존의 카드 테두리를 제거 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 기본 그림자 추가 */
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
+  border-radius: 8px; /* 모서리 둥글게 */
+}
+
+.home-home-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 더 진한 그림자 */
+  transform: translateY(-4px); /* 약간 위로 올라가는 효과 */
+}
+
+.home-home-card-img {
+  border-radius: 8px 8px 0 0; /* 이미지 상단 모서리 둥글게 */
+  object-fit: cover; /* 이미지 잘리지 않도록 */
+}
+
+.home-home-card-body {
+  padding: 16px;
+}
+
+.home-home-card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.home-home-card-text {
+  color: #6c757d; /* 부드러운 회색 텍스트 */
+}

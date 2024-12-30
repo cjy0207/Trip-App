@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom"; // useNavigate 추가
 import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
 import Map from "../component/Map/Map";
@@ -12,7 +12,6 @@ const SearchPage = () => {
 
   const [page, setPage] = useState(1);
   const [allResults, setAllResults] = useState([]);
-  const [currentLocation, setCurrentLocation] = useState({ lat: 37.5665, lng: 126.9780 }); // 기본 위치 (서울)
   const [selectedLocation, setSelectedLocation] = useState(null); // 선택된 위치
   const pageSize = 10;
 
@@ -23,12 +22,15 @@ const SearchPage = () => {
     tourCourse: 25,
   };
 
-  const { data: results, isLoading, isError, error } = useSearchQuery(
+  const { data: results, isLoading } = useSearchQuery(
     keywordFromUrl,
     page,
     pageSize,
     filterFromUrl === "all" ? Object.values(filters) : [filters[filterFromUrl]]
   );
+
+  // useNavigate 훅 사용
+  const navigate = useNavigate(); // navigate 추가
 
   // 결과 업데이트
   useEffect(() => {
@@ -56,23 +58,12 @@ const SearchPage = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  // 현재 위치 가져오기
-  useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCurrentLocation({ lat: latitude, lng: longitude });
-          setSelectedLocation({ lat: latitude, lng: longitude }); // 초기 위치 설정
-        },
-        (error) => {
-          console.error("위치를 가져올 수 없습니다:", error);
-          alert("현재 위치를 사용할 수 없어 기본 위치를 표시합니다.");
-        }
-      );
-    }
-  }, []);
+  // 카드 클릭 핸들러 추가
+  const handleCardClick = (hotel) => {
+    navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } }); // 수정된 부분
+  };
 
+  // 버튼 클릭 핸들러 (지도 보기)
   const handleCardButtonClick = (location) => {
     if (!window.kakao || !window.kakao.maps || !window.kakao.maps.services) {
       console.error("Kakao Maps SDK가 로드되지 않았습니다.");
@@ -168,6 +159,7 @@ const SearchPage = () => {
         <div className="col-md-8">
           <CardList
             items={allResults}
+            onCardClick={handleCardClick} // 카드 클릭 핸들러 전달
             onButtonClick={handleCardButtonClick} // 버튼 클릭 이벤트 핸들러 전달
           />
 

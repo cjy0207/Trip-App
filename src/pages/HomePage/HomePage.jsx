@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // useNavigate 추가
 import { useAccommodationQuery } from "../../hooks/useAccommodation";
-
-import "./HomePage.style.css";
 import Banner from "../component/Banner/Banner.jsx"; // Banner 컴포넌트 수정 필요
 import "./HomePage.style.css";
 

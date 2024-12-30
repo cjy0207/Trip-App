@@ -36,7 +36,7 @@ const AppLayout = () => {
           </Navbar.Brand>
 
           {/* 카테고리 메뉴 */}
-          <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleToggle} />
+          <Navbar.Toggle aria-controls="basic-navbar-nav " onClick={handleToggle} />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/search/accommodation" onClick={handleClose}>

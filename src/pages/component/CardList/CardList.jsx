@@ -1,11 +1,16 @@
 import React from "react";
 import "./CardList.style.css";
-const CardList = ({ items, onButtonClick }) => {
 
+const CardList = ({ items, onButtonClick, onCardClick }) => {  // 수정: onCardClick 추가
   return (
     <div className="card-list">
       {items?.map((item, index) => (
-        <div key={index} className="card-horizontal">
+        <div
+          key={index}
+          className="card-horizontal"
+          onClick={() => onCardClick(item)} // 수정: 카드 클릭 시 디테일 페이지로 이동
+          style={{ cursor: "pointer" }} 
+        >
           <img
             src={item.firstimage || "https://via.placeholder.com/300"}
             alt={item.title}
@@ -21,13 +26,14 @@ const CardList = ({ items, onButtonClick }) => {
             <div className="card-horizontal-footer">
               <button
                 className="btn btn-sm btn-primary mt-2"
-                onClick={() =>
+                onClick={(e) => {
+                  e.stopPropagation(); // 수정: 클릭 이벤트 전파 방지
                   onButtonClick({
-                    address: item.addr1, // 주소를 전달
-                    lat: item.latitude, // 필요 시 위도도 전달
-                    lng: item.longitude, // 필요 시 경도도 전달
-                  })
-                }
+                    address: item.addr1,
+                    lat: item.latitude,
+                    lng: item.longitude,
+                  });
+                }}
               >
                 지도 보기
               </button>

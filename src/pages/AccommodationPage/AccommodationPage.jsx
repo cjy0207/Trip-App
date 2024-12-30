@@ -13,7 +13,6 @@ const AccommodationPage = () => {
 
   const navigate = useNavigate(); // useNavigate 사용
 
-
   const { data: accommodations, isFetching } = useAccommodationQuery(page, pageSize);
 
   useEffect(() => {
@@ -31,9 +30,9 @@ const AccommodationPage = () => {
     navigate(`/search?query=${encodeURIComponent(query)}&filter=accommodation`);
   };
 
-  const handleCardClick = (hotel) => {
-    // 호텔 데이터를 state로 전달하여 디테일 페이지로 이동
-    navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } });
+  // 카드 클릭 핸들러 추가
+  const handleCardClick = (hotel) => { // 수정
+    navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } }); // 수정
   };
 
   return (
@@ -58,7 +57,12 @@ const AccommodationPage = () => {
 
         {/* 오른쪽 카드 리스트 영역 */}
         <div className="col-md-8">
-          <CardList items={allAccommodations} onButtonClick={handleCardButtonClick} />
+          {/* CardList에 onCardClick 속성 추가 */}
+          <CardList
+            items={allAccommodations}
+            onCardClick={handleCardClick} // 수정
+            onButtonClick={handleCardButtonClick}
+          />
           {isFetching && <p>Loading more...</p>}
         </div>
       </div>        

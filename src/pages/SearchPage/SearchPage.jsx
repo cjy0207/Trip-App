@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom"; // useNavigate 추가
+import { useSearchParams, useNavigate } from "react-router-dom"; 
 import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
 import { useSearchQuery } from "../../hooks/useSearch";
@@ -27,35 +27,30 @@ const SearchPage = () => {
     filterFromUrl === "all" ? Object.values(filters) : [filters[filterFromUrl]]
   );
 
-  const navigate = useNavigate(); // navigate 추가
+  const navigate = useNavigate(); 
 
-  // 결과 업데이트
   useEffect(() => {
     if (results) {
       setAllResults((prevResults) => [...prevResults, ...results]);
     }
   }, [results]);
 
-  // 검색 처리
   const handleSearch = (query) => {
     setSearchParams({ query, filter: "all" });
     setPage(1);
     setAllResults([]);
   };
 
-  // 필터 변경 처리
   const handleFilterChange = (filter) => {
     setSearchParams({ query: keywordFromUrl, filter });
     setPage(1);
     setAllResults([]);
   };
 
-  // 더보기 버튼 클릭 처리
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);
   };
 
-  // 카드 클릭 핸들러
   const handleCardClick = (hotel) => {
     navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } });
   };
@@ -64,7 +59,6 @@ const SearchPage = () => {
     <div className="container mt-4">
       <Banner onSearch={handleSearch} />
 
-      {/* 필터 영역 */}
       <div className="row">
         <div className="col-12 mb-3 text-center">
           <div className="d-flex justify-content-center">
@@ -108,11 +102,10 @@ const SearchPage = () => {
       </div>
 
       <div className="row">
-        {/* 오른쪽 카드 리스트 영역 */}
         <div className="col-12">
           <CardList
             items={allResults}
-            onCardClick={handleCardClick} // 카드 클릭 핸들러 전달
+            onCardClick={handleCardClick} 
           />
 
           {results?.length > 0 && (

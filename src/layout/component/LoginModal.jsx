@@ -21,7 +21,7 @@ const LoginModal = ({ show, handleClose, handleLogin }) => {
             variant="success"
             type="button"
             className="w-100"
-            onClick={handleLogin} // 로그인 처리 함수 호출
+            onClick={handleLogin} 
           >
             login
           </Button>

@@ -67,8 +67,8 @@ const SearchPage = () => {
   };
 
   const handleCardClick = (hotel) => {
-    navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } });
-  };
+    navigate(`/search/default/detail/${hotel.contentid}`, { state: { hotel } });
+  };  
 
   return (
     <div className="container mt-4">

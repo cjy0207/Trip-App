@@ -25,7 +25,7 @@ const AppLayout = () => {
 
   return (
     <div>
-      <Navbar bg="light" expand="lg" expanded={expanded} className="shadow-sm">
+      <Navbar bg="white" expand="lg" expanded={expanded} className="shadow-sm">
         <Container>
           <Navbar.Brand as={Link} to="/" className="text-success fw-bold">
             HOTEL.COM

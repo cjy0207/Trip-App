@@ -10,10 +10,10 @@ const AccommodationPage = () => {
   const [allAccommodations, setAllAccommodations] = useState([]);
   const pageSize = 10;
 
+
   const navigate = useNavigate();
 
   const { data: accommodations, isFetching } = useAccommodationQuery(page, pageSize);
-
   // 데이터를 병합하여 상태 업데이트
   useEffect(() => {
     if (accommodations) {

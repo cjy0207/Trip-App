@@ -21,6 +21,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path="detail/:contentid" element={<DetailPage />} /> 
           <Route path="/search" element={<SearchPage />} />
+          <Route path="search/default/detail/:contentid" element={<DetailPage />} /> 
           <Route path="search/accommodation" element={<AccommodationPage />} />
           <Route path="search/accommodation/detail/:contentid" element={<DetailPage />} />
           <Route path="search/leisure" element={<LeisurePage />} />

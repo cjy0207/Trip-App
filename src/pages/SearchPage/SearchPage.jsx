@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom"; 
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
 import { useSearchQuery } from "../../hooks/useSearch";
+import ScrollToTopButton from "../component/ScrollTop/ScrollToTopButton";
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +15,15 @@ const SearchPage = () => {
   const pageSize = 10;
 
   const filters = {
+    all: "All",
+    accommodation: "숙박",
+    leisure: "레저",
+    festival: "축제",
+    tourCourse: "여행 코스",
+  };
+
+  const filterTypeIds = {
+    all: null,
     accommodation: 32,
     leisure: 28,
     festival: 15,
@@ -24,16 +34,21 @@ const SearchPage = () => {
     keywordFromUrl,
     page,
     pageSize,
-    filterFromUrl === "all" ? Object.values(filters) : [filters[filterFromUrl]]
+    filterFromUrl === "all" ? Object.values(filterTypeIds).filter(Boolean) : [filterTypeIds[filterFromUrl]]
   );
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
+    console.log("Query Params:", { keywordFromUrl, filterFromUrl });
+    console.log("Results:", results);
+
     if (results) {
       setAllResults((prevResults) => [...prevResults, ...results]);
+    } else if (page === 1) {
+      setAllResults([]);
     }
-  }, [results]);
+  }, [results, page]);
 
   const handleSearch = (query) => {
     setSearchParams({ query, filter: "all" });
@@ -61,68 +76,37 @@ const SearchPage = () => {
 
       <div className="row">
         <div className="col-12 mb-3 text-center">
-          <div className="d-flex justify-content-center">
-            <strong className="me-3">Filter</strong>
-            <button
-              onClick={() => handleFilterChange("all")}
-              className={`btn btn-sm ${filterFromUrl === "all" ? "btn-success" : "btn-outline-success"} mx-1`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => handleFilterChange("accommodation")}
-              className={`btn btn-sm ${
-                filterFromUrl === "accommodation" ? "btn-success" : "btn-outline-success"
-              } mx-1`}
-            >
-              Accommodation
-            </button>
-            <button
-              onClick={() => handleFilterChange("leisure")}
-              className={`btn btn-sm ${filterFromUrl === "leisure" ? "btn-success" : "btn-outline-success"} mx-1`}
-            >
-              Leisure
-            </button>
-            <button
-              onClick={() => handleFilterChange("festival")}
-              className={`btn btn-sm ${filterFromUrl === "festival" ? "btn-success" : "btn-outline-success"} mx-1`}
-            >
-              Festival
-            </button>
-            <button
-              onClick={() => handleFilterChange("tourCourse")}
-              className={`btn btn-sm ${
-                filterFromUrl === "tourCourse" ? "btn-success" : "btn-outline-success"
-              } mx-1`}
-            >
-              Tour Course
-            </button>
+          <div className="d-flex justify-content-center flex-wrap">
+            {Object.keys(filters).map((key) => (
+              <button
+                key={key}
+                onClick={() => handleFilterChange(key)}
+                className={`btn btn-sm mx-1 ${
+                  filterFromUrl === key ? "btn-success" : "btn-outline-success"
+                }`}
+              >
+                {filters[key]}
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
       <div className="row">
         <div className="col-12">
-          <CardList
-            items={allResults}
-            onCardClick={handleCardClick} 
-          />
+          <CardList items={allResults} onCardClick={handleCardClick} />
 
-          {results?.length > 0 && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "20px",
-              }}
-            >
-              <button onClick={loadMore} className="btn btn-success mb-5" disabled={isLoading}>
+          {allResults.length > 0 && (
+            <div className="text-center mt-4 mb-4">
+              <button onClick={loadMore} className="btn btn-success" disabled={isLoading}>
                 {isLoading ? "Loading..." : "Load More"}
               </button>
             </div>
           )}
         </div>
       </div>
+
+      <ScrollToTopButton />
     </div>
   );
 };

@@ -8,10 +8,9 @@ import FestivalPage from "./pages/FestivalPage/FestivalPage.jsx";
 import TourCoursePage from "./pages/TourCoursePage/TourCoursePage.jsx";
 import LeisurePage from "./pages/LeisurePage/LeisurePage.jsx";
 import AccommodationPage from "./pages/AccommodationPage/AccommodationPage.jsx";
-import DetailPage from "./pages/DetailPage/DetailPage.jsx";
-import LeisureDetailPage from "./pages/DetailPage/LeisureDetailPage.jsx"; 
-import FestivalDetailPage from "./pages/DetailPage/FestivalDetailPage.jsx"; 
-import TourCourseDetailPage from "./pages/DetailPage/TourCourseDetailPage.jsx"; 
+import DynamicDetailPage from "./pages/DetailPage/DynamicDetailPage.jsx"; 
+import Footer from "./pages/component/Footer/Footer.jsx";
+import DetailPage from "./pages/DetailPage/DetailPage.jsx"
 
 function App() {
   return (
@@ -19,18 +18,20 @@ function App() {
       <Routes>
         <Route path="/" element={<AppLayout />}>
           <Route index element={<HomePage />} />
-          <Route path="detail/:contentid" element={<DetailPage />} /> 
           <Route path="/search" element={<SearchPage />} />
+          <Route path="detail/:contentid" element={<DetailPage />} />
+
+          {/* 카테고리별 리스트 페이지 */}
           <Route path="search/accommodation" element={<AccommodationPage />} />
-          <Route path="search/accommodation/detail/:contentid" element={<DetailPage />} />
           <Route path="search/leisure" element={<LeisurePage />} />
-          <Route path="search/leisure/detail/:contentid" element={<LeisureDetailPage />} /> {/* 레저 디테일 페이지 */}
           <Route path="search/festival" element={<FestivalPage />} />
-          <Route path="search/festival/detail/:contentid" element={<FestivalDetailPage />} /> {/* 축제 디테일 페이지 */}
           <Route path="search/tour" element={<TourCoursePage />} />
-          <Route path="search/tour/detail/:contentid" element={<TourCourseDetailPage />} /> {/* 투어 코스 디테일 페이지 */}
+
+          {/* 동적 디테일 페이지 */}
+          <Route path="search/:category/detail/:contentid" element={<DynamicDetailPage />} />
         </Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

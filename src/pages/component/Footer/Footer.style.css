@@ -1,0 +1,70 @@
+.footer {
+  background-color: #205016;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+}
+
+.footer .footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-logo h1 {
+  margin: 0;
+}
+
+.footer-links ul {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  display: inline;
+  margin-right: 15px;
+}
+
+.footer-links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  margin-top: 20px;
+  font-size: 14px;
+}
+
+/* 모바일 환경에서 스타일 조정 */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px; /* 요소 간 간격 추가 */
+    padding: 20px;
+  }
+
+  .footer-logo {
+    margin-bottom: 20px;
+  }
+
+  .footer-links ul {
+    display: flex;
+    flex-direction: column; /* 리스트를 세로로 배치 */
+    gap: 10px; /* 리스트 간 간격 추가 */
+  }
+
+  .footer-links li {
+    margin-right: 0; /* 오른쪽 여백 제거 */
+  }
+
+  .footer-bottom {
+    margin-top: 30px; /* 하단 여백 확대 */
+  }
+}

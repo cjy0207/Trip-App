@@ -29,11 +29,15 @@ const TourCoursePage = () => {
   };
 
   const handleCardClick = (tourCourse) => {
-    console.log(tourCourse);  // 디버깅용: 콘솔에 클릭한 투어 코스 객체가 제대로 찍히는지 확인
+    if (!tourCourse || !tourCourse.contentid) {
+      console.error("Invalid tourCourse data:", tourCourse);
+      return;
+    }
     navigate(`/search/tour/detail/${tourCourse.contentid}`, {
-      state: { tourCourse },
+      state: { tourcourse: tourCourse }, // 'tourcourse' 키 사용
     });
   };
+  
 
   return (
     <div className="container mt-4">

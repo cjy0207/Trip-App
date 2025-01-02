@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang&display=swap');
+
+/* 전체 폰트 설정 */
+body {
+  font-family: 'Gowun Batang', serif; /* Gowun Batang을 기본 폰트로 설정 */
+}
+
+.home-banner {
+  display: flex;
+  justify-content: center;
+  align-items:  center; 
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 70%, rgba(255, 255, 255, 1)),
+              url('../../../public/photo/banner-back.png'); 
+  background-size: cover; 
+  background-position: center; 
+  background-repeat: no-repeat; 
+  height: 300px; 
+  width: 100%; 
+  margin: 0; 
+  padding: 0;
+  position: relative; 
+  box-sizing: border-box;
+}
+
+.home-btn-primary {
+  background-color: #2F8C1C;
+  border-color: #2F8C1C;
+  color: white;
+}
+
+.home-btn-primary:hover {
+  background-color: #102e0a; /* A slightly darker shade for hover effect */
+  border-color: #102e0a;
+  color: white;
+}
+
+.home-home-area-card {
+  border: none; /* 기존의 카드 테두리를 제거 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 기본 그림자 추가 */
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
+  border-radius: 8px; /* 모서리 둥글게 */
+  cursor: pointer; /* 클릭 가능하다는 표시 */
+}
+
+.home-home-area-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 더 진한 그림자 */
+  transform: translateY(-4px); /* 약간 위로 올라가는 효과 */
+}
+
+.home-home-area-card-img {
+  border-radius: 8px 8px 0 0; /* 이미지 상단 모서리 둥글게 */
+  object-fit: cover; /* 이미지 잘리지 않도록 */
+  width: 100%; /* 카드 너비에 맞추기 */
+  height: 150px; /* 이미지 높이 고정 */
+  display: block; /* 이미지가 부모의 경계를 넘어가지 않도록 */
+}
+
+
+.home-home-area-card-body {
+  padding: 16px;
+  text-align: center; /* 텍스트를 중앙 정렬 */
+}
+
+.home-home-area-card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+
+.home-home-card {
+  border: none; /* 기존의 카드 테두리를 제거 */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* 기본 그림자 추가 */
+  transition: box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
+  border-radius: 8px; /* 모서리 둥글게 */
+}
+
+.home-home-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* 호버 시 더 진한 그림자 */
+  transform: translateY(-4px); /* 약간 위로 올라가는 효과 */
+}
+
+.home-home-card-img {
+  border-radius: 8px 8px 0 0; /* 이미지 상단 모서리 둥글게 */
+  object-fit: cover; /* 이미지 잘리지 않도록 */
+}
+
+.home-home-card-body {
+  padding: 16px;
+}
+
+.home-home-card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.home-home-card-text {
+  color: #6c757d; /* 부드러운 회색 텍스트 */
+}
+
+
+/* 기존 스타일 유지 */
+
+.home-home-area-card {
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.home-home-area-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  transform: translateY(-4px);
+}
+
+.home-home-area-card-img {
+  border-radius: 8px 8px 0 0;
+  object-fit: cover;
+  width: 100%;
+  height: 150px;
+  display: block;
+}
+
+.home-home-area-card-body {
+  padding: 16px;
+  text-align: center;
+}
+
+.home-home-area-card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+/* 모바일 환경 스타일 추가 */
+@media (max-width: 768px) {
+  .home-home-area-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    height: auto; /* 높이 조정 */
+  }
+
+  .home-home-area-card-img {
+    display: none; /* 이미지를 숨김 */
+  }
+
+  .home-home-area-card-body {
+    padding: 8px;
+    text-align: left; /* 텍스트를 왼쪽 정렬 */
+  }
+
+  .home-home-area-card-title {
+    font-size: 1rem; /* 텍스트 크기 줄임 */
+    margin-bottom: 4px; /* 아래쪽 여백 추가 */
+  }
+}

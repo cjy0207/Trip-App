@@ -1,0 +1,35 @@
+.filter-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  
+  .filter-button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #28a745;
+    color: #28a745;
+    background-color: white;
+    transition: all 0.3s ease;
+    text-align: center;
+  }
+  
+  .filter-button:hover {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .filter-button.active {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  select.form-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #28a745;
+    border-radius: 5px;
+  }

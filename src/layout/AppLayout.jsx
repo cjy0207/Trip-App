@@ -39,7 +39,7 @@ const AppLayout = () => {
             <Nav className="ms-auto">
               <Nav.Link className="d-flex align-items-center">
                 <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Flag_of_South_Korea.svg/25px-Flag_of_South_Korea.svg.png"
+                  src="./photo/korea.png" // Import한 이미지 사용
                   alt="Korea Flag"
                   style={{ width: "20px", height: "15px", marginRight: "5px" }}
                 />

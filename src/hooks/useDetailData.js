@@ -1,15 +1,7 @@
-import { useLocation, useParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useLocation, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
-/**
- * 다양한 디테일 페이지 데이터를 관리하는 커스텀 훅
- * @param {string} type - 'hotel', 'leisure', 'festival', 'tour' 중 하나를 전달
- * @returns {Object} detailData - 요청된 데이터 (호텔, 레저, 축제, 투어)
- * @returns {boolean} loading - 로딩 상태
- * @returns {string|null} error - 오류 메시지 (있을 경우)
- */
-
-const useDetail = (type) => {
+const useDetailData = (type) => {
   const location = useLocation();
   const { contentid } = useParams();
 
@@ -18,19 +10,49 @@ const useDetail = (type) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // location.state에 있는 데이터 확인 및 처리
-    if (location.state?.[type]) {
-      setDetailData(location.state[type]); // 전달된 타입에 맞는 데이터 사용
-      setLoading(false);
-    } else {
-      setError(`${type} 데이터가 없습니다`);
-      setLoading(false);
-    }
-  }, [location.state, type]);
+    const fetchData = async () => {
+      try {
+        if (!['accommodation', 'leisure', 'festival', 'tourcourse', 'tour'].includes(type)) {
+          throw new Error(`유효하지 않은 타입입니다: ${type}`);
+        }
+
+        let data;
+
+        if (location.state?.[type]) {
+          // location.state에 데이터가 있는 경우
+          console.log("Using data from location.state");
+          data = location.state[type];
+        } else {
+          // location.state가 없을 경우 API 호출
+          console.warn("location.state가 비어 있습니다. API 요청을 시도합니다.");
+          const response = await fetch(`/api/${type}/${contentid}`);
+          if (!response.ok) {
+            throw new Error(`${type} 데이터를 불러오는 데 실패했습니다.`);
+          }
+          data = await response.json();
+        }
+
+        if (!data) {
+          throw new Error(`${type}에 해당하는 데이터가 없습니다.`);
+        }
+
+        setDetailData(data);
+        setError(null);
+      } catch (err) {
+        setError(err.message);
+        setDetailData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [location.state, type, contentid]);
+
+  console.log("useDetailData Hook State:", { detailData, loading, error, contentid, type, locationState: location.state });
 
   return { detailData, loading, error, contentid };
 };
 
-export default useDetail;
 
-
+export default useDetailData;

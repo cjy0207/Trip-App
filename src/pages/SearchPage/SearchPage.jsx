@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom"; // useNavigate 추가
+import { useSearchParams, useNavigate } from "react-router-dom";
 import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
 import { useSearchQuery } from "../../hooks/useSearch";
@@ -17,7 +17,7 @@ const SearchPage = () => {
     accommodation: 32,
     leisure: 28,
     festival: 15,
-    tourCourse: 25,
+    tourcourse: 25,
   };
 
   const { data: results, isLoading } = useSearchQuery(
@@ -27,17 +27,23 @@ const SearchPage = () => {
     filterFromUrl === "all" ? Object.values(filters) : [filters[filterFromUrl]]
   );
 
-  const navigate = useNavigate(); // navigate 추가
+  const navigate = useNavigate();
 
   // 결과 업데이트
   useEffect(() => {
-    if (results) {
-      setAllResults((prevResults) => [...prevResults, ...results]);
+    if (results && results.length > 0) {
+      setAllResults((prevResults) => {
+        const newResults = results.filter(
+          (result) => !prevResults.some((prev) => prev.contentid === result.contentid)
+        );
+        return [...prevResults, ...newResults];
+      });
     }
   }, [results]);
 
   // 검색 처리
   const handleSearch = (query) => {
+    console.log("Searching with query:", query);
     setSearchParams({ query, filter: "all" });
     setPage(1);
     setAllResults([]);
@@ -45,6 +51,7 @@ const SearchPage = () => {
 
   // 필터 변경 처리
   const handleFilterChange = (filter) => {
+    console.log("Changing filter to:", filter);
     setSearchParams({ query: keywordFromUrl, filter });
     setPage(1);
     setAllResults([]);
@@ -52,12 +59,31 @@ const SearchPage = () => {
 
   // 더보기 버튼 클릭 처리
   const loadMore = () => {
+    console.log("Loading more results...");
     setPage((prevPage) => prevPage + 1);
   };
 
   // 카드 클릭 핸들러
-  const handleCardClick = (hotel) => {
-    navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } });
+  const handleCardClick = (item) => {
+    console.log("Clicked item:", item);
+
+    const categoryMap = {
+      32: "accommodation",
+      28: "leisure",
+      15: "festival",
+      25: "tourcourse",
+    };
+
+    const category = categoryMap[item.contenttypeid];
+
+    if (category) {
+      navigate(`/search/${category}/detail/${item.contentid}`, { state: { [category]: item } });
+      console.log("Navigating to:", `/search/${category}/detail/${item.contentid}`, {
+        state: { [category]: item },
+      });
+    } else {
+      console.warn("Unknown contenttypeid:", item.contenttypeid);
+    }
   };
 
   return (
@@ -69,61 +95,33 @@ const SearchPage = () => {
         <div className="col-12 mb-3 text-center">
           <div className="d-flex justify-content-center">
             <strong className="me-3">Filter</strong>
-            <button
-              onClick={() => handleFilterChange("all")}
-              className={`btn btn-sm ${filterFromUrl === "all" ? "btn-success" : "btn-outline-success"} mx-1`}
-            >
-              All
-            </button>
-            <button
-              onClick={() => handleFilterChange("accommodation")}
-              className={`btn btn-sm ${
-                filterFromUrl === "accommodation" ? "btn-success" : "btn-outline-success"
-              } mx-1`}
-            >
-              Accommodation
-            </button>
-            <button
-              onClick={() => handleFilterChange("leisure")}
-              className={`btn btn-sm ${filterFromUrl === "leisure" ? "btn-success" : "btn-outline-success"} mx-1`}
-            >
-              Leisure
-            </button>
-            <button
-              onClick={() => handleFilterChange("festival")}
-              className={`btn btn-sm ${filterFromUrl === "festival" ? "btn-success" : "btn-outline-success"} mx-1`}
-            >
-              Festival
-            </button>
-            <button
-              onClick={() => handleFilterChange("tourCourse")}
-              className={`btn btn-sm ${
-                filterFromUrl === "tourCourse" ? "btn-success" : "btn-outline-success"
-              } mx-1`}
-            >
-              Tour Course
-            </button>
+            {Object.keys(filters).map((filter) => (
+              <button
+                key={filter}
+                onClick={() => handleFilterChange(filter)}
+                className={`btn btn-sm ${
+                  filterFromUrl === filter ? "btn-success" : "btn-outline-success"
+                } mx-1`}
+              >
+                {filter.charAt(0).toUpperCase() + filter.slice(1)}
+              </button>
+            ))}
           </div>
         </div>
       </div>
 
+      {/* 카드 리스트 영역 */}
       <div className="row">
-        {/* 오른쪽 카드 리스트 영역 */}
         <div className="col-12">
-          <CardList
-            items={allResults}
-            onCardClick={handleCardClick} // 카드 클릭 핸들러 전달
-          />
+          <CardList items={allResults} onCardClick={handleCardClick} />
 
           {results?.length > 0 && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "center",
-                marginTop: "20px",
-              }}
-            >
-              <button onClick={loadMore} className="btn btn-success mb-5" disabled={isLoading}>
+            <div className="text-center mt-4">
+              <button
+                onClick={loadMore}
+                className="btn btn-success mb-5"
+                disabled={isLoading}
+              >
                 {isLoading ? "Loading..." : "Load More"}
               </button>
             </div>

@@ -15,6 +15,8 @@ const AccommodationPage = () => {
 
   const { data: accommodations, isFetching } = useAccommodationQuery(page, pageSize);
 
+ 
+
   useEffect(() => {
     if (accommodations) {
       setAllAccommodations((prev) => [...prev, ...accommodations]);
@@ -31,8 +33,8 @@ const AccommodationPage = () => {
   };
 
   // 카드 클릭 핸들러 추가
-  const handleCardClick = (hotel) => { // 수정
-    navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } }); // 수정
+  const handleCardClick = (accommodation) => { // 수정
+    navigate(`/search/accommodation/detail/${accommodation.contentid}`, { state: { accommodation } }); // 수정
   };
 
   return (

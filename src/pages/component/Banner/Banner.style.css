@@ -6,20 +6,20 @@
 }
 
 .banner-form {
-  width: 80%; 
+  width: 80%;
   max-width: 600px;
 }
 
 .input-wrapper {
-  position: relative; 
+  position: relative;
   width: 100%;
 }
 
 .banner-input {
   width: 100%;
-  border-radius: 50px; 
+  border-radius: 50px;
   border: none;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   font-size: 16px;
   padding: 10px 20px;
   padding-right: 50px; 
@@ -32,8 +32,8 @@
 
 .banner-icon-btn {
   position: absolute;
-  right: 15px; 
-  top: 50%; 
+  right: 15px;
+  top: 50%;
   transform: translateY(-50%);
   background: transparent;
   border: none;
@@ -41,10 +41,40 @@
 }
 
 .banner-icon {
-  font-size: 20px; 
-  color: #28a745; 
+  font-size: 20px;
+  color: #2E9419; 
 }
 
 .banner-icon-btn:hover .banner-icon {
   color: #1e7e34; 
+}
+
+@media (max-width: 768px) {
+  .banner-container {
+    height: 100px; 
+  }
+
+  .banner-input {
+    font-size: 14px; 
+    padding: 8px 16px; 
+  }
+
+  .banner-icon {
+    font-size: 18px; 
+  }
+}
+
+@media (max-width: 480px) {
+  .banner-form {
+    width: 90%; 
+  }
+
+  .banner-input {
+    font-size: 12px; 
+    padding: 6px 14px; 
+  }
+
+  .banner-icon {
+    font-size: 16px; 
+  }
 }

@@ -1,24 +1,37 @@
 import React, { useState } from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { Link, Outlet } from "react-router-dom";
+import LoginModal from "./component/LoginModal";
 
 const AppLayout = () => {
-  const [expanded, setExpanded] = useState(false); // Navbar 상태 관리
+  const [expanded, setExpanded] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false); 
 
   const handleToggle = () => setExpanded(!expanded);
-  const handleClose = () => setExpanded(false); // 메뉴 클릭 시 닫기
+  const handleClose = () => setExpanded(false);
+
+  const handleLoginModalOpen = () => setShowLoginModal(true);
+  const handleLoginModalClose = () => setShowLoginModal(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true); 
+    setShowLoginModal(false); 
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false); 
+  };
 
   return (
     <div>
-      <Navbar bg="light" expand="lg" expanded={expanded} className="shadow-sm">
+      <Navbar bg="white" expand="lg" expanded={expanded} className="shadow-sm">
         <Container>
-          {/* 로고 */}
           <Navbar.Brand as={Link} to="/" className="text-success fw-bold">
-            HOTEL.COM
+            TRIP.COM
           </Navbar.Brand>
 
-          {/* 카테고리 메뉴 */}
-          <Navbar.Toggle aria-controls="basic-navbar-nav" onClick={handleToggle} />
+          <Navbar.Toggle aria-controls="basic-navbar-nav " onClick={handleToggle} />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
               <Nav.Link as={Link} to="/search/accommodation" onClick={handleClose}>
@@ -35,23 +48,30 @@ const AppLayout = () => {
               </Nav.Link>
             </Nav>
 
-            {/* 오른쪽 메뉴 */}
             <Nav className="ms-auto">
-              <Nav.Link className="d-flex align-items-center">
-                <img
-                  src="./photo/korea.png" // Import한 이미지 사용
-                  alt="Korea Flag"
-                  style={{ width: "20px", height: "15px", marginRight: "5px" }}
-                />
-                KRW
-              </Nav.Link>
-              <Nav.Link as={Link} to="/login" className="ms-3" onClick={handleClose}>
-                로그인
-              </Nav.Link>
+              {isLoggedIn ? (
+                <Nav.Link
+                  as="button"
+                  className="btn  ms-3"
+                  onClick={handleLogout}
+                >
+                  로그아웃
+                </Nav.Link>
+              ) : (
+                <Nav.Link
+                  as="button"
+                  className="btn btn-outline-success ms-3"
+                  onClick={handleLoginModalOpen}
+                >
+                  로그인
+                </Nav.Link>
+              )}
             </Nav>
           </Navbar.Collapse>
         </Container>
       </Navbar>
+
+      <LoginModal show={showLoginModal} handleClose={handleLoginModalClose} handleLogin={handleLogin} />
 
       <main>
         <Outlet />

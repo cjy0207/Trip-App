@@ -3,6 +3,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import Banner from "../component/Banner/Banner";
 import CardList from "../component/CardList/CardList";
 import { useSearchQuery } from "../../hooks/useSearch";
+import ScrollToTopButton from "../component/ScrollTop/ScrollToTopButton";
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -14,6 +15,15 @@ const SearchPage = () => {
   const pageSize = 10;
 
   const filters = {
+    all: "All",
+    accommodation: "숙박",
+    leisure: "레저",
+    festival: "축제",
+    tourCourse: "여행 코스",
+  };
+
+  const filterTypeIds = {
+    all: null,
     accommodation: 32,
     leisure: 28,
     festival: 15,
@@ -24,12 +34,11 @@ const SearchPage = () => {
     keywordFromUrl,
     page,
     pageSize,
-    filterFromUrl === "all" ? Object.values(filters) : [filters[filterFromUrl]]
+    filterFromUrl === "all" ? Object.values(filterTypeIds).filter(Boolean) : [filterTypeIds[filterFromUrl]]
   );
 
   const navigate = useNavigate();
 
-  // 결과 업데이트
   useEffect(() => {
     if (results && results.length > 0) {
       setAllResults((prevResults) => {
@@ -39,9 +48,8 @@ const SearchPage = () => {
         return [...prevResults, ...newResults];
       });
     }
-  }, [results]);
+  }, [results, page]);
 
-  // 검색 처리
   const handleSearch = (query) => {
     console.log("Searching with query:", query);
     setSearchParams({ query, filter: "all" });
@@ -49,7 +57,6 @@ const SearchPage = () => {
     setAllResults([]);
   };
 
-  // 필터 변경 처리
   const handleFilterChange = (filter) => {
     console.log("Changing filter to:", filter);
     setSearchParams({ query: keywordFromUrl, filter });
@@ -57,7 +64,6 @@ const SearchPage = () => {
     setAllResults([]);
   };
 
-  // 더보기 버튼 클릭 처리
   const loadMore = () => {
     console.log("Loading more results...");
     setPage((prevPage) => prevPage + 1);
@@ -90,7 +96,6 @@ const SearchPage = () => {
     <div className="container mt-4">
       <Banner onSearch={handleSearch} />
 
-      {/* 필터 영역 */}
       <div className="row">
         <div className="col-12 mb-3 text-center">
           <div className="d-flex justify-content-center">
@@ -128,6 +133,8 @@ const SearchPage = () => {
           )}
         </div>
       </div>
+
+      <ScrollToTopButton />
     </div>
   );
 };

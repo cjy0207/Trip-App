@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useDetailInfo from "../../hooks/useDetailInfo";
 import useDetailData from "../../hooks/useDetailData";
+import Map from "../component/Map/Map";
+import ReservationModal from "./compnent/ReservationModal";
 import "./DetailPage.style.css";
 
 const FestivalDetailPage = () => {
@@ -10,32 +12,24 @@ const FestivalDetailPage = () => {
 
   // useDetailData에서 데이터 가져오기
   const { detailData, loading: dataLoading, error: dataError } = useDetailData("festival");
-  console.log("Initial Data from useDetailData:", detailData);
-
-  // useDetailInfo에서 데이터 가져오기
   const { data: festivalInfo = [], isLoading: infoLoading, isError: infoError, error: infoErrorMessage } =
     useDetailInfo(contentid, contentTypeId);
-  console.log("API Data from useDetailInfo:", festivalInfo);
 
   const [mergedData, setMergedData] = useState(null);
+  const [showMap, setShowMap] = useState(false); // 지도 보기 상태 관리
+  const [showModal, setShowModal] = useState(false);
+  
 
   // 데이터 병합
   useEffect(() => {
     if (detailData && festivalInfo.length > 0) {
-      console.log("Using API Data:", festivalInfo[0]);
       setMergedData({ ...festivalInfo[0], ...detailData });
     } else if (detailData) {
-      console.log("Using Initial Data from useDetailData:", detailData);
       setMergedData(detailData);
     } else if (festivalInfo.length > 0) {
-      console.log("Using API Data only:", festivalInfo[0]);
       setMergedData(festivalInfo[0]);
-    } else {
-      console.log("No data available from both API and useDetailData.");
     }
   }, [detailData, festivalInfo]);
-
-  console.log("Merged Data:", mergedData);
 
   if (infoLoading || dataLoading) return <p>Loading...</p>;
   if (infoError || dataError)
@@ -57,6 +51,8 @@ const FestivalDetailPage = () => {
     sponsor1 = "주최자 정보 없음",
     sponsor1tel = "주최자 연락처 정보 없음",
     eventhomepage = null,
+    mapx, // 경도
+    mapy, // 위도
     title = "제목 없음",
   } = mergedData;
 
@@ -95,8 +91,23 @@ const FestivalDetailPage = () => {
         <p>주최자 연락처: {sponsor1tel}</p>
         <p>홈페이지: {eventHomepageLink}</p>
         <p>전화번호: {tel}</p>
-        <button className="detail-button">예약하기</button>
+
+        {/* 버튼 섹션 */}
+        <div className="button-container">
+          <button className="detail-button" onClick={() => setShowModal(true)}>예약하기</button>
+          <button
+            className="detail-button"
+            style={{ marginLeft: "10px" }}
+            onClick={() => setShowMap((prev) => !prev)} // 지도 보기/닫기 버튼
+          >
+            {showMap ? "지도 닫기" : "지도 보기"}
+          </button>
+        </div>
+
+        {/* 지도 섹션 */}
+        {showMap && mapx && mapy && <Map mapx={parseFloat(mapx)} mapy={parseFloat(mapy)} />}
       </div>
+      <ReservationModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };

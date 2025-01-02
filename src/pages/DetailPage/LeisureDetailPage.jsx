@@ -2,40 +2,31 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import useDetailInfo from "../../hooks/useDetailInfo";
 import useDetailData from "../../hooks/useDetailData";
+import Map from "../component/Map/Map";
+import ReservationModal from "./compnent/ReservationModal";
 import "./DetailPage.style.css";
 
 const LeisureDetailPage = () => {
   const { contentid } = useParams(); // URL에서 contentid 가져오기
   const contentTypeId = 28; // 레저의 contentTypeId
 
-  // useDetailData에서 데이터 가져오기
   const { detailData, loading: dataLoading, error: dataError } = useDetailData("leisure");
-  console.log("Detail Data:", detailData);
-
-  // useDetailInfo에서 데이터 가져오기
   const { data: leisureInfo = [], isLoading: infoLoading, isError: infoError, error: infoErrorMessage } =
     useDetailInfo(contentid, contentTypeId);
-  console.log("Leisure Info:", leisureInfo);
 
   const [mergedData, setMergedData] = useState(null);
+  const [showMap, setShowMap] = useState(false); // 지도 보기 상태 관리
+  const [showModal, setShowModal] = useState(false);
 
-  // 데이터 병합
   useEffect(() => {
     if (detailData && leisureInfo.length > 0) {
-      console.log("Using API Data:", leisureInfo[0]);
       setMergedData({ ...leisureInfo[0], ...detailData });
     } else if (detailData) {
-      console.log("Using Detail Data:", detailData);
       setMergedData(detailData);
     } else if (leisureInfo.length > 0) {
-      console.log("Using Leisure Info only:", leisureInfo[0]);
       setMergedData(leisureInfo[0]);
-    } else {
-      console.log("No data available from both API and useDetailData.");
     }
   }, [detailData, leisureInfo]);
-
-  console.log("Merged Data:", mergedData);
 
   if (infoLoading || dataLoading) return <p>Loading...</p>;
   if (infoError || dataError)
@@ -61,6 +52,8 @@ const LeisureDetailPage = () => {
     restdateleports = "정보 없음",
     infocenterleports = "정보 없음",
     reservation = "정보 없음",
+    mapx, // 경도
+    mapy, // 위도
   } = mergedData;
 
   return (
@@ -92,8 +85,23 @@ const LeisureDetailPage = () => {
         <p>휴무일: {restdateleports}</p>
         <p>문의처: {infocenterleports}</p>
         <p>예약 정보: {reservation}</p>
-        <button className="detail-button">예약하기</button>
+
+        {/* 버튼 섹션 */}
+        <div className="button-container">
+          <button className="detail-button" onClick={() => setShowModal(true)}>예약하기</button>
+          <button
+            className="detail-button"
+            style={{ marginLeft: "10px" }}
+            onClick={() => setShowMap((prev) => !prev)} // 지도 보기/닫기 버튼
+          >
+            {showMap ? "지도 닫기" : "지도 보기"}
+          </button>
+        </div>
+
+        {/* 지도 섹션 */}
+        {showMap && mapx && mapy && <Map mapx={parseFloat(mapx)} mapy={parseFloat(mapy)} />}
       </div>
+      <ReservationModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };

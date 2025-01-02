@@ -28,9 +28,9 @@ const AccommodationPage = () => {
     }
   };
 
-  // 카드 클릭 핸들러
-  const handleCardClick = (hotel) => {
-    navigate(`/search/accommodation/detail/${hotel.contentid}`, { state: { hotel } });
+  // 카드 클릭 핸들러 추가
+  const handleCardClick = (accommodation) => { // 수정
+    navigate(`/search/accommodation/detail/${accommodation.contentid}`, { state: { accommodation } }); // 수정
   };
 
   // Load More 버튼 클릭 핸들러

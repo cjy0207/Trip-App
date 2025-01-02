@@ -15,6 +15,8 @@ import DetailPage from "./pages/DetailPage/DetailPage";
 import LeisureDetailPage from "./pages/DetailPage/LeisureDetailPage";
 import FestivalDetailPage from "./pages/DetailPage/FestivalDetailPage";
 import TourCourseDetailPage from "./pages/DetailPage/TourCourseDetailPage";
+import DynamicDetailPage from "./pages/DetailPage/DynamicDetailPage.jsx"; 
+import Footer from "./pages/component/Footer/Footer.jsx";
 
 function App() {
   return (
@@ -38,8 +40,14 @@ function App() {
 
           <Route path="detail/:contentid" element={<DetailPage />} />
           <Route path="search/default/detail/:contentid" element={<DetailPage />} />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="detail/:contentid" element={<DetailPage />} />
+
+          {/* 동적 디테일 페이지 */}
+          <Route path="search/:category/detail/:contentid" element={<DynamicDetailPage />} />
         </Route>
       </Routes>
+      <Footer />
     </div>
   );
 }

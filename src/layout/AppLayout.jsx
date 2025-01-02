@@ -28,7 +28,7 @@ const AppLayout = () => {
       <Navbar bg="white" expand="lg" expanded={expanded} className="shadow-sm">
         <Container>
           <Navbar.Brand as={Link} to="/" className="text-success fw-bold">
-            HOTEL.COM
+            TRIP.COM
           </Navbar.Brand>
 
           <Navbar.Toggle aria-controls="basic-navbar-nav " onClick={handleToggle} />

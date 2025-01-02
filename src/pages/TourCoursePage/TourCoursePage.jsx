@@ -24,10 +24,15 @@ const TourCoursePage = () => {
   };
 
   const handleCardClick = (tourCourse) => {
+    if (!tourCourse || !tourCourse.contentid) {
+      console.error("Invalid tourCourse data:", tourCourse);
+      return;
+    }
     navigate(`/search/tour/detail/${tourCourse.contentid}`, {
-      state: { tourCourse },
+      state: { tourcourse: tourCourse }, // 'tourcourse' 키 사용
     });
   };
+  
 
   const loadMore = () => {
     setPage((prevPage) => prevPage + 1);

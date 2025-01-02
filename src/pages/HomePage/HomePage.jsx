@@ -78,7 +78,7 @@ const HomePage = () => {
                   </p>
                   <Link
                     to={`/detail/${item.contentid}`}
-                    state={{ hotel: item }}
+                    state={{ accommodation: item }}
                     className="home-btn-primary btn"
                   >
                     View Details

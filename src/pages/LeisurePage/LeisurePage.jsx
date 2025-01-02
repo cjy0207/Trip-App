@@ -13,6 +13,7 @@ const LeisurePage = () => {
 
   const { data: leisures, isFetching } = useLeisureQuery(page, pageSize);
 
+
   useEffect(() => {
     if (leisures) {
       setAllLeisures((prev) => [...prev, ...leisures]);

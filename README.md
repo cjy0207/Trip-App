@@ -44,7 +44,7 @@ Trip-App은 여행과 관련된 다양한 정보를 제공하고, 사용자가 �
 
 ### 기술 스택
 
-	Frontend: React.js, CSS
-	Backend/API Integration: Kakao API, (재)예술경영지원센터 공연예술통합전산망 API
-	Deployment: Netlify
+Frontend: React.js, CSS
+Backend/API Integration: Kakao API, (재)예술경영지원센터 공연예술통합전산망 API
+Deployment: Netlify
 
